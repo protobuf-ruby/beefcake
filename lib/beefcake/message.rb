@@ -12,6 +12,12 @@ module Beefcake
     class UnkownType < StandardError
     end
 
+    class MissingField < StandardError
+      def initialize(name)
+        super("Field not set: name:#{name}")
+      end
+    end
+
 
     ##
     # Stores field information and is sortable
@@ -93,10 +99,18 @@ module Beefcake
       self.class.fields
     end
 
+    def validate!
+      fields.each do |f|
+        if f.rule == :required && __send__(f.name).nil?
+          raise MissingField, f.name
+        end
+      end
+    end
 
     ##
     # Encoding
     def encode(w)
+      validate!
       fields.sort.each do |f|
         value = __send__(f.name)
         args  = [*f] << value
@@ -115,9 +129,7 @@ module Beefcake
 
       wire = get_wire_type(type)
 
-      # TODO: if valid wire type
-      #       if required but nil panic
-      #       if optional but nil don't send
+      # TODO: if required but nil panic
 
       # It's safe to write to the wire.
       # We will start with the header information

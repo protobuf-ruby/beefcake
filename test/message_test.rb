@@ -1,8 +1,12 @@
 require 'beefcake/message'
 
 class SimpleMessage < Beefcake::Message
+  # Fields are sotred by `fn` for encoding.
+  # It's probably uncommon to have an optional
+  # field set before a required.  But it makes
+  # testing for errors easier.
   optional :a, :string, 1
-  optional :b, :int32,  2
+  required :b, :int32,  2
 end
 
 class MessageTest < Test::Unit::TestCase
@@ -12,8 +16,17 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_encode_null_optional
+    msg = SimpleMessage.new :b => 1
+    assert_equal "\020\001", msg.encode("")
+  end
+
+  def test_encode_null_required
     msg = SimpleMessage.new :a => "testing"
-    assert_equal "\012\007testing", msg.encode("")
+    encoded = ""
+    assert_raise Beefcake::Message::MissingField do
+      msg.encode(encoded)
+    end
+    assert_equal "", encoded
   end
 
   def test_decode
