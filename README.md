@@ -39,8 +39,8 @@ Any object responding to `<<` can accept encoding
 
 # Why?
 
-  Other libs didn't feel very "Ruby" to me and were hard to parse and Ruby
-  deserves first-class ProtoBuf support.
+  Ruby deserves and needs first-class ProtoBuf support.
+  Other libs didn't feel very "Ruby" to me and were hard to parse.
 
 # Caveats
 
