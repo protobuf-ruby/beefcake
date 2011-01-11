@@ -1,6 +1,6 @@
-# Beefcake
+# Beefcake (A sane Google Protocol Buffers library for Ruby)
+## It's all about being Buf; ProtoBuf.
 
-It's all about being Buf; ProtoBuf.
 
 # Example
 
