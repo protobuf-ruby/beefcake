@@ -62,6 +62,18 @@ Any object responding to `<<` can accept encoding
 
   This library was built with EventMachine in mind.  Not just blocking-IO.
 
+# Dev
+
+Source:
+
+    $ git clone git://github.com/bmizerany/beefcake
+
+Testing:
+
+    $ gem install turn
+    $ cd /path/to/beefcake
+    $ turn
+
 # TODO
 
 Very, very near future:
