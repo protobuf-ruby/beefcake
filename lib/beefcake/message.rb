@@ -109,6 +109,10 @@ module Beefcake
     # This could be broken out somewhere and
     # tested in isolation now.
     def encode!(w, rule, name, type, fn, value)
+      if value.nil?
+        return
+      end
+
       wire = get_wire_type(type)
 
       # TODO: if valid wire type

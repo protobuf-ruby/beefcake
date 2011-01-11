@@ -5,12 +5,15 @@ class SimpleMessage < Beefcake::Message
   optional :b, :int32,  2
 end
 
-
 class MessageTest < Test::Unit::TestCase
-
   def test_encode
     msg = SimpleMessage.new :a => "testing", :b => 2
     assert_equal "\012\007testing\020\002", msg.encode("")
+  end
+
+  def test_encode_null_optional
+    msg = SimpleMessage.new :a => "testing"
+    assert_equal "\012\007testing", msg.encode("")
   end
 
   def test_decode
