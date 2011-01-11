@@ -5,12 +5,12 @@ module Beefcake
     Wire = 2
 
     def self.encode(w, v)
-      Varint.encode(w, v.length)
       if v.respond_to?(:encode)
-        v.encode(w)
-      else
-        w << v
+        v = v.encode("")
       end
+
+      Varint.encode(w, v.length)
+      w << v
     end
 
     def self.decode(r)

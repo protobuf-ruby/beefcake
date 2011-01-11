@@ -1,5 +1,9 @@
 require 'beefcake/message'
 
+class EmbedMe < Beefcake::Message
+  required :x, :string, 1
+end
+
 class SimpleMessage < Beefcake::Message
   # Fields are sotred by `fn` for encoding.
   # It's probably uncommon to have an optional
@@ -7,6 +11,7 @@ class SimpleMessage < Beefcake::Message
   # testing for errors easier.
   optional :a, :string, 1
   required :b, :int32,  2
+  optional :e, EmbedMe, 3
 end
 
 class MessageTest < Test::Unit::TestCase
@@ -27,6 +32,14 @@ class MessageTest < Test::Unit::TestCase
       msg.encode(encoded)
     end
     assert_equal "", encoded
+  end
+
+  def test_encode_embeded_message
+    msg = SimpleMessage.new(
+      :b => 1, # required
+      :e => EmbedMe.new(:x => "test")
+    )
+    assert_equal "\020\001\032\006\n\004test", msg.encode("")
   end
 
   def test_decode

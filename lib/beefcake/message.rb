@@ -146,12 +146,17 @@ module Beefcake
     end
 
     def get_wire_type(type)
+      # Handle embeded Messages
+      if type.is_a?(Class)
+        return 2
+      end
+
       case type
       when :int32, :int64, :uint32, :uint64, :sint32, :sint64, :bool, :enum
         0
       when :fixed64, :sfixed64, :double
         1
-      when :string, :bytes, Message # TODO: packed repeated fields
+      when :string, :bytes # TODO: packed repeated fields
         2
       when :fixed32, :sfixed32, :float
         5
