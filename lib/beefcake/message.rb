@@ -1,4 +1,5 @@
 require 'beefcake/encode'
+require 'beefcake/decode'
 
 module Beefcake
   class Message
@@ -49,43 +50,8 @@ module Beefcake
     end
 
 
-    ##
-    # Decoding
     def self.decode(r)
-      msg = self.new
-      while ! r.empty?
-        decode!(r, msg)
-      end
-      msg
-    end
-
-    def self.decode!(r, msg)
-      u    = Varint.decode(r)
-      wire = (u & 0x7)
-      fn   = (u >> 3)
-
-      field = fields.find {|fld| fld.fn == fn }
-
-      # TODO: if field[WIRE] != wire ????
-      decoder = get_decoder(wire)
-
-      # TODO: if field.nil? skip
-      value = decoder.decode(r)
-
-      msg.send(field.name.to_s+"=", value)
-
-      msg
-    end
-
-    def self.get_decoder(wire)
-      case wire
-      when 0
-        Varint
-      when 2
-        Lendel
-      else
-        raise UnknownWireType, wire
-      end
+      Decode.decode(r, self.new)
     end
 
     ##
