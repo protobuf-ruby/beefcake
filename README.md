@@ -64,16 +64,16 @@ Any object responding to `<<` can accept encoding
 
 # TODO
 
-  Very, very near future:
-  * Enum support
-  * Wire types 1,3 & 5
+Very, very near future:
 
-  Nice to have:
-  * `.proto` -> Ruby generator
-  * Groups (would be nice for accessing older protos)
-  * Embeded messages must be encoded to memory before encoded to the stream; if
-    there is a simple, non-invasive way to fix this, I'm ready to take that
-    patch.
+* Enum support
+* Wire types 1,3 & 5
+
+Nice to have:
+
+* `.proto` -> Ruby generator
+* Groups (would be nice for accessing older protos)
+* Remove need to encode embeded messages before writing to the wire.
 
 # Further Reading
 
