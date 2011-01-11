@@ -51,9 +51,9 @@ Any object responding to `<<` can accept encoding
   Example (for the above):
 
     message Point {
-      required x int32 = 1
-      required y int32 = 2
-      optional tag string = 3
+      required int32 x = 1
+      required int32 y = 2
+      optional string tag = 3
     }
 
   In the near future, a generator would be nice.  I welcome anyone willing
