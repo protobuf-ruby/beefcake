@@ -113,8 +113,7 @@ module Beefcake
       validate!
       fields.sort.each do |f|
         value = __send__(f.name)
-        args  = [*f] << value
-        encode!(w, *args)
+        encode!(w, value, *f.values[1..-1])
       end
       w # Always return the writer from encodes
     end
@@ -122,7 +121,7 @@ module Beefcake
     # TODO:
     # This could be broken out somewhere and
     # tested in isolation now.
-    def encode!(w, rule, name, type, fn, value)
+    def encode!(w, value, name, type, fn)
       if value.nil?
         return
       end
