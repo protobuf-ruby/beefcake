@@ -17,7 +17,6 @@ module Beefcake
     def encode(w, obj, flds)
       validate!(obj, flds)
       flds.each do |_, name, *rest|
-        p [name, rest]
         encode!(w, obj[name], *rest)
       end
       w

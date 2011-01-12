@@ -37,6 +37,15 @@ Any object responding to `<<` can accept encoding
     decoded = Point.decode(encoded)
     p [:point, decoded]
 
+    # Upgrading message fields to the wire
+    point = Point.new :x => 1, :y => 2
+    point.upgrade(w, :y, 3)
+    point.upgrade(w, :tag, "Cavalli Cafe")
+
+    point.tag # => "Cavalli Cafe"
+    point.y   # => 3
+    w         # Upgraded fields encoded and appended
+
 # Why?
 
   Ruby deserves and needs first-class ProtoBuf support.

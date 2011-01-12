@@ -53,12 +53,27 @@ module Beefcake
       __send__(k)
     end
 
+    def []=(k,v)
+      __send__(k.to_s+"=", v)
+    end
+
     ##
     # Encoding
     def encode(w)
       flds = fields.sort.map(&:values)
       Encode.encode(w, self, flds)
       w # Always return the writer from encodes
+    end
+
+    ##
+    # Experimental
+    # I'm not sure if this is abuse of the spec or not.
+    def upgrade(w, name, value)
+      # TODO: handle value.nil?
+      fld = fields.find {|fld| fld.name == name }
+      # TODO: handle fld.nil?
+      self[name] = value
+      Encode.encode!(w, value, fld.type, fld.fn)
     end
 
   end

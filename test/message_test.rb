@@ -25,6 +25,35 @@ class MessageTest < Test::Unit::TestCase
     assert_equal "\020\001", msg.encode("")
   end
 
+  def test_upgrade
+    msg = SimpleMessage.new :b => 1
+    w   = ""
+
+    msg.encode(w)
+    assert_equal "\020\001", w
+
+    msg.upgrade(w, :b, 2)
+    assert_equal "\020\001\020\002", w
+  end
+
+  def test_upgrade_null_value
+    msg = SimpleMessage.new :b => 1
+    w   = ""
+
+    msg.encode(w)
+    assert_equal "\020\001", w
+
+    msg.upgrade(w, :b, nil)
+    assert_equal "\020\001", w
+  end
+
+  def test_upgrade_unknown_field
+    msg = SimpleMessage.new :b => 1
+    assert_raise NoMethodError do
+      msg.upgrade("", :x, 1)
+    end
+  end
+
   def test_encode_null_required
     msg = SimpleMessage.new :a => "testing"
     encoded = ""
