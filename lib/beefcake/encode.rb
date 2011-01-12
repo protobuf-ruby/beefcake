@@ -33,18 +33,21 @@ module Beefcake
 
       case type
       when :int32, :uint32, :int64, :uint64, :bool, :enum
-        encode_varint(w, fn, val)
+        encode_info(w, fn, 0)
+        encode_varint(w, val)
       when :sint32
-        encode_varint(w, fn, (val << 1) ^ (val >> 31))
+        encode_info(w, fn, 0)
+        encode_varint(w, (val << 1) ^ (val >> 31))
       #when :sint64
       #when :sfixed64
       #when :fixed64, :double
       when :string, :bytes
-        encode_lendel(w, fn, val)
+        encode_info(w, fn, 2)
+        encode_lendel(w, val)
       else
         if val.respond_to?(:encode)
-          val = val.encode("")
-          encode_lendel(w, fn, val)
+          encode_info(w, fn, 2)
+          encode_lendel(w, val.encode(""))
         else
           raise UnknownType, type
         end
@@ -57,8 +60,7 @@ module Beefcake
       w << ((fn << 3) | wire)
     end
 
-    def encode_varint(w, fn, v)
-      encode_info(w, fn, 0)
+    def encode_varint(w, v)
       while v > 127
         w << (0x80 | (v&0x7F))
         v = v>>7
@@ -66,8 +68,7 @@ module Beefcake
       w << v
     end
 
-    def encode_lendel(w, fn, v)
-      encode_info(w, fn, 2)
+    def encode_lendel(w, v)
       if v.respond_to?(:encode)
         v = v.encode("")
       end
