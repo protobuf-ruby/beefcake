@@ -31,20 +31,47 @@ module Beefcake
     def encode!(w, val, type, fn)
       return if val.nil?
 
-      wire = get_wire_type(type)
-
-      # It's safe to write to the wire.
-      # We will start with the header information
-      w << ((fn << 3) | wire)
-
-      case wire
-      when 0
-        Varint.encode(w, val)
-      when 2
-        Lendel.encode(w, val)
+      case type
+      when :int32, :uint32, :int64, :uint64, :bool, :enum
+        encode_varint(w, fn, val)
+      #when :sint32
+      #when :sint64
+      #when :sfixed64
+      #when :fixed64, :double
+      when :string, :bytes
+        encode_lendel(w, fn, val)
       else
-        raise UnkownWireType, wire
+        if val.respond_to?(:encode)
+          val = val.encode("")
+          encode_lendel(w, fn, val)
+        else
+          raise UnknownType, type
+        end
       end
+
+      w
+    end
+
+    def encode_info(w, fn, wire)
+      w << ((fn << 3) | wire)
+    end
+
+    def encode_varint(w, fn, v)
+      encode_info(w, fn, 0)
+      while v > 127
+        w << (0x80 | (v&0x7F))
+        v = v>>7
+      end
+      w << v
+    end
+
+    def encode_lendel(w, fn, v)
+      encode_info(w, fn, 2)
+      if v.respond_to?(:encode)
+        v = v.encode("")
+      end
+      Varint.encode(w, v.length)
+      w << v
     end
 
     ##
@@ -55,26 +82,6 @@ module Beefcake
         if rule == :required && obj[name].nil?
           raise MissingField, name
         end
-      end
-    end
-
-    def get_wire_type(type)
-      # Handle embeded Messages
-      if type.is_a?(Class)
-        return 2
-      end
-
-      case type
-      when :int32, :int64, :uint32, :uint64, :sint32, :sint64, :bool, :enum
-        0
-      when :fixed64, :sfixed64, :double
-        1
-      when :string, :bytes # TODO: packed repeated fields
-        2
-      when :fixed32, :sfixed32, :float
-        5
-      else
-        raise UnknownType, type
       end
     end
   end
