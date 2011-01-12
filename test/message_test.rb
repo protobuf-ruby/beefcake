@@ -28,7 +28,7 @@ class MessageTest < Test::Unit::TestCase
   def test_encode_null_required
     msg = SimpleMessage.new :a => "testing"
     encoded = ""
-    assert_raise Beefcake::Message::MissingField do
+    assert_raise Beefcake::MissingField do
       msg.encode(encoded)
     end
     assert_equal "", encoded

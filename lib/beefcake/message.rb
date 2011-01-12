@@ -1,23 +1,9 @@
+require 'beefcake/errors'
 require 'beefcake/encode'
 require 'beefcake/decode'
 
 module Beefcake
   class Message
-
-    ##
-    # Errors
-    class UnknownWireType < StandardError
-    end
-
-    class UnkownType < StandardError
-    end
-
-    class MissingField < StandardError
-      def initialize(name)
-        super("Field not set: name:#{name}")
-      end
-    end
-
 
     ##
     # Stores field information and is sortable
@@ -30,7 +16,6 @@ module Beefcake
 
     ##
     # Class level DSL
-
     def self.fields
       @fields ||= []
     end
@@ -64,22 +49,15 @@ module Beefcake
       self.class.fields
     end
 
-    def validate!
-      fields.each do |f|
-        if f.rule == :required && __send__(f.name).nil?
-          raise MissingField, f.name
-        end
-      end
+    def [](k)
+      __send__(k)
     end
 
     ##
     # Encoding
     def encode(w)
-      validate!
-      fields.sort.each do |f|
-        value = __send__(f.name)
-        Encode.encode(w, value, *f.values[1..-1])
-      end
+      flds = fields.sort.map(&:values)
+      Encode.encode(w, self, flds)
       w # Always return the writer from encodes
     end
 
