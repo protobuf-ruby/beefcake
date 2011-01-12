@@ -1,5 +1,3 @@
-require 'beefcake/varint'
-require 'beefcake/lendel'
 require 'beefcake/errors'
 
 module Beefcake
@@ -71,7 +69,7 @@ module Beefcake
     end
 
     def encode_lendel(w, v)
-      Varint.encode(w, v.length)
+      encode_varint(w, v.length)
       w << v
     end
 
