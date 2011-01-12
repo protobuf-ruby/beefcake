@@ -34,7 +34,8 @@ module Beefcake
       case type
       when :int32, :uint32, :int64, :uint64, :bool, :enum
         encode_varint(w, fn, val)
-      #when :sint32
+      when :sint32
+        encode_varint(w, fn, (val << 1) ^ (val >> 31))
       #when :sint64
       #when :sfixed64
       #when :fixed64, :double
