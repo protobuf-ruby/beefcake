@@ -69,9 +69,6 @@ module Beefcake
     end
 
     def encode_lendel(w, v)
-      if v.respond_to?(:encode)
-        v = v.encode("")
-      end
       Varint.encode(w, v.length)
       w << v
     end
