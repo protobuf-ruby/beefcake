@@ -38,7 +38,9 @@ module Beefcake
       when :sint32
         encode_info(w, fn, 0)
         encode_varint(w, (val << 1) ^ (val >> 31))
-      #when :sint64
+      when :sint64
+        encode_info(w, fn, 0)
+        encode_varint(w, (val << 1) ^ (val >> 63))
       #when :sfixed64
       #when :fixed64, :double
       when :string, :bytes
