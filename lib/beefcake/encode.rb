@@ -55,6 +55,9 @@ module Beefcake
         if val.respond_to?(:encode)
           encode_info(w, fn, 2)
           encode_lendel(w, val.encode(""))
+        elsif type.is_a?(Module)
+          encode_info(w, fn, 0)
+          encode_varint(w, val)
         else
           raise UnknownType, type
         end

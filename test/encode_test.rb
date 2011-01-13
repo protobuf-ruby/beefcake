@@ -47,6 +47,10 @@ class EncodeTest < Test::Unit::TestCase
     assert_equal "\022\007testing", encode!("", "testing", :string, 2)
   end
 
+  def test_enum
+    assert_equal "\010\001", encode!("", 1, Module.new, 1)
+  end
+
   ##
   # Test encoding of multiple fields
   def test_encode
