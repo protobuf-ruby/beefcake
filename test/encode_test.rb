@@ -33,6 +33,12 @@ class EncodeTest < Test::Unit::TestCase
     assert_equal "\011\002\000\000\000\000\000\000\000", encode!("", 2, :fixed64, 1)
   end
 
+  def test_sfixed64
+    assert_equal "\011\000\000\000\000\000\000\000\000", encode!("", 0,  :sfixed64, 1)
+    assert_equal "\011\001\000\000\000\000\000\000\000", encode!("", -1, :sfixed64, 1)
+    assert_equal "\011\002\000\000\000\000\000\000\000", encode!("", 1,  :sfixed64, 1)
+  end
+
   def test_double
     assert_equal "\011\030-DT\373!\t@", encode!("", Math::PI, :double, 1)
   end

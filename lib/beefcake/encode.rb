@@ -42,7 +42,9 @@ module Beefcake
       when :fixed64
         encode_info(w, fn, 1)
         encode_fixed64(w, val)
-      #when :sfixed64
+      when :sfixed64
+        encode_info(w, fn, 1)
+        encode_fixed64(w, (val << 1) ^ (val >> 63))
       when :double
         encode_info(w, fn, 1)
         encode_double(w, val)
