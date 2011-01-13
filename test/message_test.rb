@@ -17,12 +17,12 @@ end
 class MessageTest < Test::Unit::TestCase
   def test_encode
     msg = SimpleMessage.new :a => "testing", :b => 2
-    assert_equal "\012\007testing\020\002", msg.encode("")
+    assert_equal "\012\007testing\020\002", msg.encode
   end
 
   def test_encode_null_optional
     msg = SimpleMessage.new :b => 1
-    assert_equal "\020\001", msg.encode("")
+    assert_equal "\020\001", msg.encode
   end
 
   def test_upgrade
@@ -68,7 +68,7 @@ class MessageTest < Test::Unit::TestCase
       :b => 1, # required
       :e => EmbedMe.new(:x => "test")
     )
-    assert_equal "\020\001\032\006\n\004test", msg.encode("")
+    assert_equal "\020\001\032\006\n\004test", msg.encode
   end
 
 end

@@ -54,7 +54,7 @@ module Beefcake
 
     ##
     # Encoding
-    def encode(w)
+    def encode(w="")
       flds = fields.sort.map(&:values)
       Encode.encode(w, self, flds)
       w # Always return the writer from encodes

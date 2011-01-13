@@ -28,14 +28,14 @@ Any object responding to `<<` can accept encoding
     point.encode(s)
     p [:s, s]
     # or (because encode returns the string/stream)
-    p [:s, point.encode("")]
+    p [:s, point.encode]
     # or
     open("point.dat") do |f|
       point.encode(f)
     end
 
     # decode
-    encoded = point.encode("")
+    encoded = point.encode
     decoded = Point.decode(encoded)
     p [:point, decoded]
 
