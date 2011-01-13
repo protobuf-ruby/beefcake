@@ -26,6 +26,12 @@ class EncodeTest < Test::Unit::TestCase
     assert_equal "\015\001\000\000\000", encode!("", 1, :fixed32, 1)
   end
 
+  def test_sfixed32
+    assert_equal "\015\000\000\000\000", encode!("", 0,  :sfixed32, 1)
+    assert_equal "\015\001\000\000\000", encode!("", -1, :sfixed32, 1)
+    assert_equal "\015\002\000\000\000", encode!("", 1,  :sfixed32, 1)
+  end
+
   def test_signed64
     assert_equal "\010\000", encode!("", 0,  :sint64, 1)
     assert_equal "\010\001", encode!("", -1, :sint64, 1)

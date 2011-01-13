@@ -54,6 +54,9 @@ module Beefcake
       when :fixed32
         encode_info(w, fn, 5)
         encode_fixed32(w, val)
+      when :sfixed32
+        encode_info(w, fn, 5)
+        encode_fixed32(w, (val << 1) ^ (val >> 31))
       else
         if val.respond_to?(:encode)
           encode_info(w, fn, 2)
