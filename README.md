@@ -1,6 +1,8 @@
 # Beefcake (A sane Google Protocol Buffers library for Ruby)
 ## It's all about being Buf; ProtoBuf.
 
+## NOTICE:  This project is still a moving target.  Decoding
+##          will be brought back tomorrow (1/12/2011).
 
 # Example
 
