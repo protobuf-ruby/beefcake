@@ -39,10 +39,13 @@ module Beefcake
       when :sint64
         encode_info(w, fn, 0)
         encode_varint(w, (val << 1) ^ (val >> 63))
-      when :fixed64, :double
+      when :fixed64
         encode_info(w, fn, 1)
         encode_fixed64(w, val)
       #when :sfixed64
+      when :double
+        encode_info(w, fn, 1)
+        encode_double(w, val)
       when :string, :bytes
         encode_info(w, fn, 2)
         encode_lendel(w, val)
@@ -71,6 +74,10 @@ module Beefcake
     end
 
     def encode_fixed64(w, v)
+      0.step(56, 8) {|i| w << ((v >> i) & 0xFF) }
+    end
+
+    def encode_double(w, v)
       w << [v].pack("E")
     end
 
