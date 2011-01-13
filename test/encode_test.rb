@@ -32,6 +32,11 @@ class EncodeTest < Test::Unit::TestCase
     assert_equal "\015\002\000\000\000", encode!("", 1,  :sfixed32, 1)
   end
 
+  def test_float
+    assert_equal "\015\000\000\000\000", encode!("", 0.0, :float, 1)
+    assert_equal "\r\303\365H@", encode!("", 3.14, :float, 1)
+  end
+
   def test_signed64
     assert_equal "\010\000", encode!("", 0,  :sint64, 1)
     assert_equal "\010\001", encode!("", -1, :sint64, 1)

@@ -57,6 +57,9 @@ module Beefcake
       when :sfixed32
         encode_info(w, fn, 5)
         encode_fixed32(w, (val << 1) ^ (val >> 31))
+      when :float
+        encode_info(w, fn, 5)
+        encode_float(w, val)
       else
         if val.respond_to?(:encode)
           encode_info(w, fn, 2)
@@ -90,6 +93,10 @@ module Beefcake
 
     def encode_fixed32(w, v)
       0.step(28, 8) {|i| w << ((v >> i) & 0xFF) }
+    end
+
+    def encode_float(w, v)
+      w << [v].pack("e")
     end
 
     def encode_double(w, v)
