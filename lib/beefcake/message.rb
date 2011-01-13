@@ -1,6 +1,5 @@
 require 'beefcake/errors'
 require 'beefcake/encode'
-require 'beefcake/decode'
 
 module Beefcake
   class Message
@@ -34,10 +33,6 @@ module Beefcake
       field(:optional, name, type, fn)
     end
 
-
-    def self.decode(r)
-      Decode.decode(r, self.new)
-    end
 
     ##
     # Instance Methods

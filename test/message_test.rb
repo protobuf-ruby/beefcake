@@ -71,12 +71,4 @@ class MessageTest < Test::Unit::TestCase
     assert_equal "\020\001\032\006\n\004test", msg.encode("")
   end
 
-  def test_decode
-    msg = SimpleMessage.new :a => "testing", :b => 2
-    encoded = msg.encode("")
-    decoded = SimpleMessage.decode(encoded)
-
-    assert_equal msg.a, decoded.a
-    assert_equal msg.b, decoded.b
-  end
 end
