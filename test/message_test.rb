@@ -1,4 +1,4 @@
-require 'beefcake/message'
+require 'beefcake'
 
 class EmbedMe < Beefcake::Message
   required :x, :string, 1
