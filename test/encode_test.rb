@@ -27,6 +27,11 @@ class EncodeTest < Test::Unit::TestCase
     assert_equal "\010\002", encode!("", 1,  :sint64, 1)
   end
 
+  def test_fixed64
+    assert_equal "\011\000\000\000\000\000\000\360\077", encode!("", 1.0, :fixed64, 1)
+    assert_equal "\011\232\231\231\231\231\231\001\100", encode!("", 2.2, :fixed64, 1)
+  end
+
   def test_string
     assert_equal "\022\007testing", encode!("", "testing", :string, 2)
   end
