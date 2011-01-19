@@ -24,31 +24,16 @@ module Beefcake
       x + (y << 32)
     end
 
-    def read_int32
-      n = read_varint!
-      if n > MaxInt64
-        n -= (1 << 64)
-      end
-      n
-    end
-
-    def read_uint32
-      read_varint!
-    end
-
     def read_int64
-      n = read_varint!
+      n = read_uint64
       if n > MaxInt64
         n -= (1 << 64)
       end
       n
     end
+    alias :read_int32 :read_int64
 
     def read_uint64
-      read_varint!
-    end
-
-    def read_varint!
       n = shift = 0
       while true
         if shift >= 64
@@ -62,6 +47,7 @@ module Beefcake
         end
       end
     end
+    alias :read_uint32 :read_uint64
 
     def read_float
       bytes = read(4)
