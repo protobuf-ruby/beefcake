@@ -1,0 +1,63 @@
+require 'beefcake/buffer'
+
+module Beefcake
+  module Message
+    class Field < Struct.new(:rule, :name, :type, :fn)
+      def <=>(o)
+        fn <=> o.fn
+      end
+    end
+
+    module Dsl
+      def required(name, type, fn)
+        field(:required, name, type, fn)
+      end
+
+      def field(rule, name, type, fn)
+        fields[fn] = Field.new(rule, name, type, fn)
+        attr_accessor name
+      end
+
+      def fields
+        @fields ||= {}
+      end
+    end
+
+    def self.included(o)
+      o.extend Dsl
+    end
+
+    def initialize(attrs)
+      fields.values.each {|fld| self[fld.name] = attrs[fld.name] }
+    end
+
+    def fields
+      self.class.fields
+    end
+
+    def [](k)
+      __send__(k)
+    end
+
+    def []=(k, v)
+      __send__(k.to_s+"=", v)
+    end
+
+    def encode(buf = Buffer.new)
+      # TODO: Error if any required fields at nil
+
+      fields.values.sort.each do |fld|
+        val = __send__(fld.name)
+        case fld.type
+        when Class # encodable
+          # TODO: raise error if type != val.class
+          buf.append_tagged_string(fld.fn, val.encode)
+        else
+          buf.__send__("append_tagged_"+fld.type.to_s, fld.fn, val)
+        end
+      end
+
+      buf
+    end
+  end
+end
