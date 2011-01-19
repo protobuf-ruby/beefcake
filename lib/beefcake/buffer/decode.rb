@@ -9,6 +9,10 @@ module Beefcake
       [n >> 3, n & 0x7]
     end
 
+    def read_lendel
+      read(read_uint64)
+    end
+
     def read_fixed32
       bytes = read(4)
       bytes.unpack("V").first

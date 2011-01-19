@@ -16,6 +16,11 @@ class BufferDecodeTest < Test::Unit::TestCase
     assert_equal [2, 5], @buf.read_info
   end
 
+  def test_read_lendel
+    @buf.append_lendel("testing")
+    assert_equal "testing", @buf.read_lendel
+  end
+
   def test_read_fixed32
     @buf.append_fixed32(123)
     assert_equal 123, @buf.read_fixed32

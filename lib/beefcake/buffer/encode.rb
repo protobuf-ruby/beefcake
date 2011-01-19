@@ -8,6 +8,11 @@ module Beefcake
       self << ((fn << 3) | wire)
     end
 
+    def append_lendel(o)
+      append_uint64(o.length)
+      self << o
+    end
+
     def append_fixed32(n, tag=false)
       if ! (MinUint32..MaxUint32).include?(n)
         raise OutOfRange, n

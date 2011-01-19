@@ -17,6 +17,11 @@ class BufferEncodeTest < Test::Unit::TestCase
     assert_equal "\021", @buf.to_s
   end
 
+  def test_append_lendel
+    @buf.append_lendel("testing")
+    assert_equal "\007testing", @buf.to_s
+  end
+
   def test_append_fixed32
     @buf.append_fixed32(1)
     assert_equal "\001\0\0\0", @buf.to_s
