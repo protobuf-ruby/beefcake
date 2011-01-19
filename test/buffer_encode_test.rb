@@ -173,4 +173,40 @@ class BufferEncodeTest < Test::Unit::TestCase
     assert_equal "\001\000", @buf.to_s
   end
 
+  def test_append_sint32
+    @buf.append_sint32(-2)
+    assert_equal "\003", @buf.to_s
+
+    @buf.clear!
+    @buf.append_sint32(B::MaxInt32)
+    assert_equal "\376\377\377\377\017", @buf.to_s
+
+    @buf.clear!
+    @buf.append_sint32(B::MinInt32)
+    assert_equal "\377\377\377\377\017", @buf.to_s
+  end
+
+  def test_append_sfixed32
+    @buf.append_sfixed32(-2)
+    assert_equal "\003\000\000\000", @buf.to_s
+  end
+
+  def test_append_sint64
+    @buf.append_sint64(-2)
+    assert_equal "\003", @buf.to_s
+
+    @buf.clear!
+    @buf.append_sint64(B::MaxInt64)
+    assert_equal "\376\377\377\377\377\377\377\377\377\001", @buf.to_s
+
+    @buf.clear!
+    @buf.append_sint64(B::MinInt64)
+    assert_equal "\377\377\377\377\377\377\377\377\377\001", @buf.to_s
+  end
+
+  def test_append_sfixed64
+    @buf.append_sfixed64(B::MaxInt64)
+    assert_equal "\376\377\377\377\377\377\377\377", @buf.to_s
+  end
+
 end

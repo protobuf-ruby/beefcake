@@ -57,6 +57,23 @@ module Beefcake
       append_uint64(n)
     end
 
+    def append_sint32(n)
+      append_uint32((n << 1) ^ (n >> 31))
+    end
+
+    def append_sfixed32(n)
+      append_fixed32((n << 1) ^ (n >> 31))
+    end
+
+    def append_sint64(n)
+      append_uint64((n << 1) ^ (n >> 63))
+    end
+
+    def append_sfixed64(n)
+      append_fixed64((n << 1) ^ (n >> 63))
+    end
+
+
     def append_uint64(n)
       if ! (MinUint64..MaxUint64).include?(n)
         raise OutOfRange, n

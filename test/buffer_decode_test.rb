@@ -75,4 +75,40 @@ class BufferDecodeTest < Test::Unit::TestCase
     assert_equal false, @buf.read_bool
   end
 
+  def test_read_sint32
+    @buf.append_sint32(B::MinInt32)
+    assert_equal B::MinInt32, @buf.read_sint32
+
+    @buf.clear!
+    @buf.append_sint32(B::MaxInt32)
+    assert_equal B::MaxInt32, @buf.read_sint32
+  end
+
+  def test_read_sfixed32
+    @buf.append_sfixed32(B::MinInt32)
+    assert_equal B::MinInt32, @buf.read_sfixed32
+
+    @buf.clear!
+    @buf.append_sfixed32(B::MaxInt32)
+    assert_equal B::MaxInt32, @buf.read_sfixed32
+  end
+
+  def test_read_sint64
+    @buf.append_sint64(B::MinInt64)
+    assert_equal B::MinInt64, @buf.read_sint64
+
+    @buf.clear!
+    @buf.append_sint64(B::MaxInt64)
+    assert_equal B::MaxInt64, @buf.read_sint64
+  end
+
+  def test_read_sfixed64
+    @buf.append_sfixed64(B::MinInt64)
+    assert_equal B::MinInt64, @buf.read_sfixed64
+
+    @buf.clear!
+    @buf.append_sfixed64(B::MaxInt64)
+    assert_equal B::MaxInt64, @buf.read_sfixed64
+  end
+
 end
