@@ -4,6 +4,11 @@ module Beefcake
 
   class Buffer
 
+    def read_info
+      n = read_uint64
+      [n >> 3, n & 0x7]
+    end
+
     def read_fixed32
       bytes = read(4)
       bytes.unpack("V").first

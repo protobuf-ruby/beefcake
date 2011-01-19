@@ -8,6 +8,14 @@ class BufferDecodeTest < Test::Unit::TestCase
     @buf = B.new
   end
 
+  def test_read_info
+    @buf.append_info(1, 2)
+    assert_equal [1, 2], @buf.read_info
+
+    @buf.append_info(2, 5)
+    assert_equal [2, 5], @buf.read_info
+  end
+
   def test_read_fixed32
     @buf.append_fixed32(123)
     assert_equal 123, @buf.read_fixed32

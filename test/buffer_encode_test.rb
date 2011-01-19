@@ -8,6 +8,15 @@ class BufferEncodeTest < Test::Unit::TestCase
     @buf = B.new
   end
 
+  def test_append_info
+    @buf.append_info(1, 0)
+    assert_equal "\010", @buf.to_s
+
+    @buf.clear!
+    @buf.append_info(2, 1)
+    assert_equal "\021", @buf.to_s
+  end
+
   def test_append_fixed32
     @buf.append_fixed32(1)
     assert_equal "\001\0\0\0", @buf.to_s
