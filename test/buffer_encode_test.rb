@@ -157,7 +157,6 @@ class BufferEncodeTest < Test::Unit::TestCase
   end
 
   def test_append_float
-    @buf.clear!
     @buf.append_float(3.14)
     assert_equal "\303\365H@", @buf.to_s
   end
