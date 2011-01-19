@@ -85,53 +85,53 @@ class BufferEncodeTest < Test::Unit::TestCase
     end
   end
 
-  def test_append_varint32
-    @buf.append_varint32(1)
+  def test_append_int32
+    @buf.append_int32(1)
     assert_equal "\001", @buf.to_s
 
     @buf.clear!
-    @buf.append_varint32(-1)
+    @buf.append_int32(-1)
     assert_equal "\377\377\377\377\377\377\377\377\377\001", @buf.to_s
 
     @buf.clear!
-    @buf.append_varint32(B::MinInt32)
+    @buf.append_int32(B::MinInt32)
     assert_equal "\200\200\200\200\370\377\377\377\377\001", @buf.to_s
 
     @buf.clear!
-    @buf.append_varint32(B::MaxInt32)
+    @buf.append_int32(B::MaxInt32)
     assert_equal "\377\377\377\377\007", @buf.to_s
 
     assert_raise B::OutOfRange do
-      @buf.append_varint32(B::MinInt32 - 1)
+      @buf.append_int32(B::MinInt32 - 1)
     end
 
     assert_raise B::OutOfRange do
-      @buf.append_varint32(B::MaxInt32 + 1)
+      @buf.append_int32(B::MaxInt32 + 1)
     end
   end
 
-  def test_append_varint64
-    @buf.append_varint64(1)
+  def test_append_int64
+    @buf.append_int64(1)
     assert_equal "\001", @buf.to_s
 
     @buf.clear!
-    @buf.append_varint64(-1)
+    @buf.append_int64(-1)
     assert_equal "\377\377\377\377\377\377\377\377\377\001", @buf.to_s
 
     @buf.clear!
-    @buf.append_varint64(B::MinInt64)
+    @buf.append_int64(B::MinInt64)
     assert_equal "\200\200\200\200\200\200\200\200\200\001", @buf.to_s
 
     @buf.clear!
-    @buf.append_varint64(B::MaxInt64)
+    @buf.append_int64(B::MaxInt64)
     assert_equal "\377\377\377\377\377\377\377\377\177", @buf.to_s
 
     assert_raise B::OutOfRange do
-      @buf.append_varint64(B::MinInt64 - 1)
+      @buf.append_int64(B::MinInt64 - 1)
     end
 
     assert_raise B::OutOfRange do
-      @buf.append_varint64(B::MaxInt64 + 1)
+      @buf.append_int64(B::MaxInt64 + 1)
     end
   end
 

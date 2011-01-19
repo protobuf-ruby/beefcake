@@ -24,7 +24,7 @@ module Beefcake
       x + (y << 32)
     end
 
-    def read_varint32
+    def read_int32
       n = read_varint!
       if n > MaxInt64
         n -= (1 << 64)
@@ -36,7 +36,7 @@ module Beefcake
       read_varint!
     end
 
-    def read_varint64
+    def read_int64
       n = read_varint!
       if n > MaxInt64
         n -= (1 << 64)
@@ -74,7 +74,7 @@ module Beefcake
     end
 
     def read_bool
-      read_varint32 != 0
+      read_int32 != 0
     end
 
   end

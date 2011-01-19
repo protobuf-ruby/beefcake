@@ -29,12 +29,12 @@ module Beefcake
       self << [n & 0xFFFFFFFF, n >> 32].pack("VV")
     end
 
-    def append_varint32(n)
+    def append_int32(n)
       if ! (MinInt32..MaxInt32).include?(n)
         raise OutOfRange, n
       end
 
-      append_varint64(n)
+      append_int64(n)
     end
 
     def append_uint32(n)
@@ -45,7 +45,7 @@ module Beefcake
       append_uint64(n)
     end
 
-    def append_varint64(n)
+    def append_int64(n)
       if ! (MinInt64..MaxInt64).include?(n)
         raise OutOfRange, n
       end
@@ -81,7 +81,7 @@ module Beefcake
     end
 
     def append_bool(n)
-      append_varint64(n ? 1 : 0)
+      append_int64(n ? 1 : 0)
     end
 
   end

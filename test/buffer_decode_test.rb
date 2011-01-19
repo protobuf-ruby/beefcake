@@ -36,20 +36,20 @@ class BufferDecodeTest < Test::Unit::TestCase
     assert_equal 1, @buf.read_uint32
   end
 
-  def test_read_varint32
-    @buf.append_varint32(999)
-    assert_equal 999, @buf.read_varint32
+  def test_read_int32
+    @buf.append_int32(999)
+    assert_equal 999, @buf.read_int32
 
-    @buf.append_varint32(-999)
-    assert_equal -999, @buf.read_varint32
+    @buf.append_int32(-999)
+    assert_equal -999, @buf.read_int32
   end
 
-  def test_read_varint64
-    @buf.append_varint64(999)
-    assert_equal 999, @buf.read_varint64
+  def test_read_int64
+    @buf.append_int64(999)
+    assert_equal 999, @buf.read_int64
 
-    @buf.append_varint64(-999)
-    assert_equal -999, @buf.read_varint64
+    @buf.append_int64(-999)
+    assert_equal -999, @buf.read_int64
   end
 
   def test_read_uint64
