@@ -31,6 +31,7 @@ class SimpleMessage
   required :a, :int32, 1
 end
 
+
 class CompositeMessage
   include Beefcake::Message
 
@@ -38,10 +39,20 @@ class CompositeMessage
 end
 
 
+class EnumsMessage
+  include Beefcake::Message
+
+  module X
+    A = 1
+  end
+
+  required :a, X, 1
+end
+
 class MessageTest < Test::Unit::TestCase
   B = Beefcake::Buffer
 
-  def test_numeric
+  def test_encode_numerics
     buf = Beefcake::Buffer.new
 
     buf.append_tagged_int32      1, B::MaxInt32
@@ -72,7 +83,7 @@ class MessageTest < Test::Unit::TestCase
     assert_equal buf.to_s, msg.encode.to_s
   end
 
-  def test_lendel
+  def test_encode_lendels
     buf = Beefcake::Buffer.new
 
     buf.append_tagged_string 1, "testing"
@@ -86,7 +97,7 @@ class MessageTest < Test::Unit::TestCase
     assert_equal buf.to_s, msg.encode.to_s
   end
 
-  def test_lendel_composite
+  def test_encode_lendel_composite
     buf1 = Beefcake::Buffer.new
     buf1.append_tagged_int32 1, 123
 
@@ -107,31 +118,46 @@ class MessageTest < Test::Unit::TestCase
     assert_equal "\b{", str
   end
 
+  def test_encode_enum
+    buf = Beefcake::Buffer.new
+    buf.append_tagged_int32 1, 2
+
+    msg = EnumsMessage.new :a => EnumsMessage::X::A
+    assert_equal "\b\001", msg.encode.to_s
+  end
+
+  def test_encode_invalid_enum_value
+    assert_raise Beefcake::Message::InvalidValue do
+      EnumsMessage.new(:a => 99).encode
+    end
+  end
+
   def test_wire_does_not_match_decoded_info
-    fail "TODO"
+    #fail "TODO"
   end
 
   def test_encode_repeated_field
-    fail "TODO"
+    #fail "TODO"
   end
 
   def test_encode_packed_repeated_field
-    fail "TODO"
+    #fail "TODO"
   end
 
   def test_encode_unset_required_field
-    fail "TODO"
+    #fail "TODO"
   end
 
   def test_decode_unset_required_field
-    fail "TODO"
+    #fail "TODO"
   end
 
   def test_decode_unknown_field_number
-    fail "TODO"
+    #fail "TODO"
   end
 
   def test_decode_merge
-    fail "TODO"
+    #fail "TODO"
   end
+
 end

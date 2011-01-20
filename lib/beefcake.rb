@@ -2,6 +2,13 @@ require 'beefcake/buffer'
 
 module Beefcake
   module Message
+
+    class InvalidValue < StandardError
+      def initialize(name, val)
+        super("Invalid Value given for `#{name}`: #{val}")
+      end
+    end
+
     class Field < Struct.new(:rule, :name, :type, :fn)
       def <=>(o)
         fn <=> o.fn
@@ -60,12 +67,22 @@ module Beefcake
         when Class # encodable
           # TODO: raise error if type != val.class
           buf.append_tagged_string(fld.fn, val.encode)
+        when Module # enum
+          if ! valid_enum?(fld.type, val)
+            raise InvalidValue.new(fld.name, val)
+          end
+
+          buf.append_tagged_uint64(fld.fn, val)
         else
           buf.__send__("append_tagged_"+fld.type.to_s, fld.fn, val)
         end
       end
 
       buf
+    end
+
+    def valid_enum?(mod, val)
+      mod.constants.any? {|name| mod.const_get(name) == val }
     end
   end
 end
