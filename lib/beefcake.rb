@@ -74,6 +74,7 @@ module Beefcake
             raise InvalidValue.new(fld.name, val)
           end
 
+          buf.append_tagged_int32(fld.fn, val)
         else
           buf.__send__("append_tagged_"+fld.type.to_s, fld.fn, val)
         end
