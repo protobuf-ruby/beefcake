@@ -44,6 +44,14 @@ module Beefcake
     end
 
     def encode(buf = Buffer.new)
+      if ! buf.respond_to?(:<<)
+        raise ArgumentError, "buf doesn't respond to `<<`"
+      end
+
+      if ! buf.is_a?(Buffer)
+        buf = Buffer.new(buf)
+      end
+
       # TODO: Error if any required fields at nil
 
       fields.values.sort.each do |fld|

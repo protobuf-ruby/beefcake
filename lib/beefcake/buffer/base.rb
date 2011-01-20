@@ -61,12 +61,14 @@ module Beefcake
       end
     end
 
-    def initialize
+    def initialize(buf="")
+      @orig = buf
+      @buf = buf
       clear!
     end
 
     def clear!
-      @buf = ""
+      @buf = @orig
     end
 
     def length

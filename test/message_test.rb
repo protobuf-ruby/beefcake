@@ -100,6 +100,13 @@ class MessageTest < Test::Unit::TestCase
     assert_equal buf2.to_s, msg.encode.to_s
   end
 
+  def test_encode_to_string
+    msg = SimpleMessage.new :a => 123
+    str = ""
+    msg.encode(str)
+    assert_equal "\b{", str
+  end
+
   def test_wire_does_not_match_decoded_info
   end
 
