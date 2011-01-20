@@ -83,7 +83,6 @@ Testing:
 Very, very near future:
 
 * Enum support
-* Wire types 1,3 & 5
 
 Nice to have:
 
