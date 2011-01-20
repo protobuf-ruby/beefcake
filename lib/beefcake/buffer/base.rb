@@ -37,7 +37,7 @@ module Beefcake
       pims.include?(:encode) || pims.include?("encode")
     end
 
-    attr_reader :buf
+    attr_accessor :buf
 
     alias :to_s   :buf
     alias :to_str :buf
@@ -61,13 +61,7 @@ module Beefcake
     end
 
     def initialize(buf="")
-      @orig = buf
       @buf = buf
-      clear!
-    end
-
-    def clear!
-      @buf = @orig
     end
 
     def length

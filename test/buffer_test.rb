@@ -13,7 +13,7 @@ class BufferTest < Test::Unit::TestCase
     assert_equal "asdf", @buf.to_s
     assert_equal "asdf", @buf.to_str
 
-    @buf.clear!
+    @buf.buf = ""
     assert_equal "", @buf.to_s
   end
 
