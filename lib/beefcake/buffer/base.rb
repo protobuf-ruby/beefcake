@@ -23,7 +23,6 @@ module Beefcake
       when :fixed32, :sfixed32, :float
         5
       else
-        p [:type, type]
         if encodable?(type)
           2
         else
