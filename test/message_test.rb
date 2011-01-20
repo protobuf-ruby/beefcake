@@ -130,4 +130,8 @@ class MessageTest < Test::Unit::TestCase
   def test_decode_unknown_field_number
     fail "TODO"
   end
+
+  def test_decode_merge
+    fail "TODO"
+  end
 end
