@@ -108,20 +108,26 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_wire_does_not_match_decoded_info
+    fail "TODO"
   end
 
   def test_encode_repeated_field
+    fail "TODO"
   end
 
   def test_encode_packed_repeated_field
+    fail "TODO"
   end
 
   def test_encode_unset_required_field
+    fail "TODO"
   end
 
   def test_decode_unset_required_field
+    fail "TODO"
   end
 
   def test_decode_unknown_field_number
+    fail "TODO"
   end
 end
