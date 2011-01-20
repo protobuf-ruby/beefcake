@@ -49,6 +49,18 @@ class EnumsMessage
   required :a, X, 1
 end
 
+
+class EnumsDefaultMessage
+  include Beefcake::Message
+
+  module X
+    A = 1
+    B = 2
+  end
+
+  required :a, X, 1, :default => X::B
+end
+
 class MessageTest < Test::Unit::TestCase
   B = Beefcake::Buffer
 
@@ -130,6 +142,13 @@ class MessageTest < Test::Unit::TestCase
     assert_raise Beefcake::Message::InvalidValue do
       EnumsMessage.new(:a => 99).encode
     end
+  end
+
+  def test_enum_default
+    msg = EnumsDefaultMessage.new
+    assert_equal "\b\002", msg.encode.to_s
+    msg = EnumsDefaultMessage.new :a => 1
+    assert_equal "\b\001", msg.encode.to_s
   end
 
   def test_wire_does_not_match_decoded_info

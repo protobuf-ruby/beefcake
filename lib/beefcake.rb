@@ -5,23 +5,23 @@ module Beefcake
 
     class InvalidValue < StandardError
       def initialize(name, val)
-        super("Invalid Value given for `#{name}`: #{val}")
+        super("Invalid Value given for `#{name}`: #{val.inspect}")
       end
     end
 
-    class Field < Struct.new(:rule, :name, :type, :fn)
+    class Field < Struct.new(:rule, :name, :type, :fn, :opts)
       def <=>(o)
         fn <=> o.fn
       end
     end
 
     module Dsl
-      def required(name, type, fn)
-        field(:required, name, type, fn)
+      def required(name, type, fn, opts={})
+        field(:required, name, type, fn, opts)
       end
 
-      def field(rule, name, type, fn)
-        fields[fn] = Field.new(rule, name, type, fn)
+      def field(rule, name, type, fn, opts)
+        fields[fn] = Field.new(rule, name, type, fn, opts)
         attr_accessor name
       end
 
@@ -34,8 +34,10 @@ module Beefcake
       o.extend Dsl
     end
 
-    def initialize(attrs)
-      fields.values.each {|fld| self[fld.name] = attrs[fld.name] }
+    def initialize(attrs={})
+      fields.values.each do |fld|
+        self[fld.name] = attrs[fld.name] || fld.opts[:default]
+      end
     end
 
     def fields
