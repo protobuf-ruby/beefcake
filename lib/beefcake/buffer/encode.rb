@@ -101,6 +101,12 @@ module Beefcake
       append_int64(n ? 1 : 0)
     end
 
+    def append_string(s)
+      append_uint64(s.length)
+      self << s
+    end
+    alias :append_bytes :append_string
+
   end
 
 end

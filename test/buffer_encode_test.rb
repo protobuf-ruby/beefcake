@@ -209,4 +209,14 @@ class BufferEncodeTest < Test::Unit::TestCase
     assert_equal "\376\377\377\377\377\377\377\377", @buf.to_s
   end
 
+  def test_append_string
+    @buf.append_string("testing")
+    assert_equal "\007testing", @buf.to_s
+  end
+
+  def test_append_bytes
+    @buf.append_bytes("testing")
+    assert_equal "\007testing", @buf.to_s
+  end
+
 end
