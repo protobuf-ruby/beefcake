@@ -79,6 +79,15 @@ module Beefcake
       read_int32 != 0
     end
 
+    def skip(wire)
+      case wire
+      when 0: read_uint64
+      when 1: read_fixed64
+      when 2: read_string
+      when 5: read_fixed32
+      end
+    end
+
 
     private
 

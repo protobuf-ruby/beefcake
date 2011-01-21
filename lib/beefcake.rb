@@ -40,6 +40,10 @@ module Beefcake
         field(:repeated, name, type, fn, opts)
       end
 
+      def optional(name, type, fn, opts={})
+        field(:optional, name, type, fn, opts)
+      end
+
       def field(rule, name, type, fn, opts)
         fields[fn] = Field.new(rule, name, type, fn, opts)
         attr_accessor name
@@ -120,8 +124,14 @@ module Beefcake
         while buf.length > 0
           fn, wire = buf.read_info
 
-          # TODO: check if fld.nil?
           fld = fields[fn]
+
+          # We don't have a field for with index fn.
+          # Ignore this data and move on.
+          if fld.nil?
+            buf.skip(wire)
+            next
+          end
 
           exp = Buffer.wire_for(fld.type)
           if wire != exp

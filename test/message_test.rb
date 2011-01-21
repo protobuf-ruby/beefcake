@@ -28,7 +28,7 @@ end
 class SimpleMessage
   include Beefcake::Message
 
-  required :a, :int32, 1
+  optional :a, :int32, 1
 end
 
 
@@ -162,7 +162,7 @@ class MessageTest < Test::Unit::TestCase
 
   def test_encode_unset_required_field
     assert_raises Beefcake::Message::RequiredFieldNotSetError do
-      SimpleMessage.new.encode
+      NumericsMessage.new.encode
     end
   end
 
@@ -226,9 +226,7 @@ class MessageTest < Test::Unit::TestCase
 
   def test_wire_does_not_match_decoded_info
     buf = Beefcake::Buffer.new
-
-    buf.append_info(1, 2) # string
-    buf.append_string("testing")
+    buf.append(:string, "testing", 1)
 
     assert_raises Beefcake::Message::WrongTypeError do
       SimpleMessage.decode(buf)
@@ -240,7 +238,12 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_decode_unknown_field_number
-    #fail "TODO"
+    buf = Beefcake::Buffer.new
+    buf.append(:string, "testing", 2)
+
+    msg = SimpleMessage.decode(buf)
+
+    assert_equal nil, msg.a
   end
 
   def test_decode_repeated_field
