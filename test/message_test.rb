@@ -148,7 +148,7 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_encode_invalid_enum_value
-    assert_raise Beefcake::Message::InvalidValue do
+    assert_raise Beefcake::Message::InvalidValueError do
       EnumsMessage.new(:a => 99).encode
     end
   end

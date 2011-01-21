@@ -3,7 +3,7 @@ require 'beefcake/buffer'
 module Beefcake
   module Message
 
-    class InvalidValue < StandardError
+    class InvalidValueError < StandardError
       def initialize(name, val)
         super("Invalid Value given for `#{name}`: #{val.inspect}")
       end
@@ -91,7 +91,7 @@ module Beefcake
             buf.append_tagged_string(fld.fn, val.encode)
           when Module # enum
             if ! valid_enum?(fld.type, val)
-              raise InvalidValue.new(fld.name, val)
+              raise InvalidValueError.new(fld.name, val)
             end
 
             buf.append_tagged_int32(fld.fn, val)
