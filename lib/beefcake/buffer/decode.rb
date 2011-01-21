@@ -9,7 +9,7 @@ module Beefcake
       [n >> 3, n & 0x7]
     end
 
-    def read_lendel
+    def read_string
       read(read_uint64)
     end
 

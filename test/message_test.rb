@@ -111,7 +111,7 @@ class MessageTest < Test::Unit::TestCase
     assert_equal buf.to_s, msg.encode.to_s
   end
 
-  def test_encode_lendels
+  def test_encode_strings
     buf = Beefcake::Buffer.new
 
     buf.append_tagged_string 1, "testing"
@@ -125,7 +125,7 @@ class MessageTest < Test::Unit::TestCase
     assert_equal buf.to_s, msg.encode.to_s
   end
 
-  def test_encode_lendel_composite
+  def test_encode_string_composite
     buf1 = Beefcake::Buffer.new
     buf1.append_tagged_int32 1, 123
 
