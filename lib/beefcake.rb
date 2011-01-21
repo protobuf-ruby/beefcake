@@ -129,6 +129,7 @@ module Beefcake
           # We don't have a field for with index fn.
           # Ignore this data and move on.
           if fld.nil?
+            p [:skip, fn, wire, buf]
             buf.skip(wire)
             next
           end
@@ -136,6 +137,17 @@ module Beefcake
           exp = Buffer.wire_for(fld.type)
           if wire != exp
             raise WrongTypeError.new(fld.name, exp, wire)
+          end
+
+          if fld.rule == :repeated && fld.opts[:packed]
+            len = buf.read_uint64
+            tmp = Buffer.new(buf.read(len))
+            o[fld.name] ||= []
+            while tmp.length > 0
+              o[fld.name] << tmp.read(fld.type)
+            end
+
+            next
           end
 
           val = buf.read(fld.type)
