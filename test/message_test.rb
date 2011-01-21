@@ -147,7 +147,9 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_encode_unset_required_field
-    #fail "TODO"
+    assert_raise Beefcake::Message::RequiredFieldNotSetError do
+      SimpleMessage.new.encode
+    end
   end
 
   def test_encode_repeated_field

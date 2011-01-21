@@ -9,6 +9,12 @@ module Beefcake
       end
     end
 
+    class RequiredFieldNotSetError < StandardError
+      def initialize(name)
+        super("Field #{name} is required but nil")
+      end
+    end
+
     class Field < Struct.new(:rule, :name, :type, :fn, :opts)
       def <=>(o)
         fn <=> o.fn
@@ -52,7 +58,17 @@ module Beefcake
       __send__(k.to_s+"=", v)
     end
 
+    def validate!
+      fields.values.each do |fld|
+        if fld.rule == :required && self[fld.name].nil?
+          raise RequiredFieldNotSetError, fld.name
+        end
+      end
+    end
+
     def encode(buf = Buffer.new)
+      validate!
+
       if ! buf.respond_to?(:<<)
         raise ArgumentError, "buf doesn't respond to `<<`"
       end
