@@ -36,7 +36,7 @@ class BufferTest < Test::Unit::TestCase
     assert_equal 5, Beefcake::Buffer.wire_for(:sfixed32)
     assert_equal 5, Beefcake::Buffer.wire_for(:float)
 
-    assert_raise Beefcake::Buffer::UnknownType do
+    assert_raises Beefcake::Buffer::UnknownType do
       Beefcake::Buffer.wire_for(:asdf)
     end
   end

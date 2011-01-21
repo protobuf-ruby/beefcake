@@ -155,13 +155,13 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_encode_invalid_enum_value
-    assert_raise Beefcake::Message::InvalidValueError do
+    assert_raises Beefcake::Message::InvalidValueError do
       EnumsMessage.new(:a => 99).encode
     end
   end
 
   def test_encode_unset_required_field
-    assert_raise Beefcake::Message::RequiredFieldNotSetError do
+    assert_raises Beefcake::Message::RequiredFieldNotSetError do
       SimpleMessage.new.encode
     end
   end
@@ -230,7 +230,7 @@ class MessageTest < Test::Unit::TestCase
     buf.append_info(1, 2) # string
     buf.append_string("testing")
 
-    assert_raise Beefcake::Message::WrongTypeError do
+    assert_raises Beefcake::Message::WrongTypeError do
       SimpleMessage.decode(buf)
     end
   end
