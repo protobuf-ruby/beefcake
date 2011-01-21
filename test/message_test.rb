@@ -257,7 +257,9 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_decode_merge
-    #fail "TODO"
+  end
+
+  def test_decode_default
   end
 
 end
