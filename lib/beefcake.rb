@@ -84,28 +84,48 @@ module Beefcake
       # TODO: Error if any required fields at nil
 
       fields.values.sort.each do |fld|
-        encode!(buf, fld)
+        if fld.opts[:packed]
+          bytes = encode!(Buffer.new, fld, false)
+          buf.append_info(Buffer.wire_for(fld.type), fld.fn)
+          buf.append_uint64(bytes.length)
+          buf << bytes
+        else
+          encode!(buf, fld, true)
+        end
       end
 
       buf
     end
 
-    def encode!(buf, fld)
+    def encode!(buf, fld, tag)
       Array(self[fld.name]).each do |val|
         case fld.type
         when Class # encodable
           # TODO: raise error if type != val.class
-          buf.append_tagged_string(fld.fn, val.encode)
+          if tag
+            buf.append_tagged_string(fld.fn, val.encode)
+          else
+            buf.append_string(val.encode)
+          end
         when Module # enum
           if ! valid_enum?(fld.type, val)
             raise InvalidValueError.new(fld.name, val)
           end
 
-          buf.append_tagged_int32(fld.fn, val)
+          if tag
+            buf.append_tagged_int32(fld.fn, val)
+          else
+            buf.append_int32(val)
+          end
         else
-          buf.__send__("append_tagged_"+fld.type.to_s, fld.fn, val)
+          if tag
+            buf.__send__("append_tagged_"+fld.type.to_s, fld.fn, val)
+          else
+            buf.__send__("append_"+fld.type.to_s, val)
+          end
         end
       end
+      buf
     end
 
     def valid_enum?(mod, val)

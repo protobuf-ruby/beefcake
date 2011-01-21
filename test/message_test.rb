@@ -69,6 +69,13 @@ class RepeatedMessage
 end
 
 
+class PackedRepeatedMessage
+  include Beefcake::Message
+
+  repeated :a, :int32, 1, :packed => true
+end
+
+
 class MessageTest < Test::Unit::TestCase
   B = Beefcake::Buffer
 
@@ -174,7 +181,24 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_encode_packed_repeated_field
-    #fail "TODO"
+    buf = Beefcake::Buffer.new
+
+    # Varint
+    buf.append_info(0, 1)
+
+    # Give size in bytes
+    buf.append_uint64 5
+
+    # Values
+    buf.append_int32 1
+    buf.append_int32 2
+    buf.append_int32 3
+    buf.append_int32 4
+    buf.append_int32 5
+
+    msg = PackedRepeatedMessage.new :a => [1, 2, 3, 4, 5]
+
+    assert_equal buf.to_s, msg.encode.to_s
   end
 
 
