@@ -26,6 +26,10 @@ module Beefcake
         field(:required, name, type, fn, opts)
       end
 
+      def repeated(name, type, fn, opts={})
+        field(:repeated, name, type, fn, opts)
+      end
+
       def field(rule, name, type, fn, opts)
         fields[fn] = Field.new(rule, name, type, fn, opts)
         attr_accessor name
@@ -80,19 +84,20 @@ module Beefcake
       # TODO: Error if any required fields at nil
 
       fields.values.sort.each do |fld|
-        val = __send__(fld.name)
-        case fld.type
-        when Class # encodable
-          # TODO: raise error if type != val.class
-          buf.append_tagged_string(fld.fn, val.encode)
-        when Module # enum
-          if ! valid_enum?(fld.type, val)
-            raise InvalidValue.new(fld.name, val)
-          end
+        Array(self[fld.name]).each do |val|
+          case fld.type
+          when Class # encodable
+            # TODO: raise error if type != val.class
+            buf.append_tagged_string(fld.fn, val.encode)
+          when Module # enum
+            if ! valid_enum?(fld.type, val)
+              raise InvalidValue.new(fld.name, val)
+            end
 
-          buf.append_tagged_int32(fld.fn, val)
-        else
-          buf.__send__("append_tagged_"+fld.type.to_s, fld.fn, val)
+            buf.append_tagged_int32(fld.fn, val)
+          else
+            buf.__send__("append_tagged_"+fld.type.to_s, fld.fn, val)
+          end
         end
       end
 

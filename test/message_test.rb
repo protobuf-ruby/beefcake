@@ -62,6 +62,13 @@ class EnumsDefaultMessage
 end
 
 
+class RepeatedMessage
+  include Beefcake::Message
+
+  repeated :a, :int32, 1
+end
+
+
 class MessageTest < Test::Unit::TestCase
   B = Beefcake::Buffer
 
@@ -153,7 +160,17 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_encode_repeated_field
-    #fail "TODO"
+    buf = Beefcake::Buffer.new
+
+    buf.append_tagged_int32 1, 1
+    buf.append_tagged_int32 1, 2
+    buf.append_tagged_int32 1, 3
+    buf.append_tagged_int32 1, 4
+    buf.append_tagged_int32 1, 5
+
+    msg = RepeatedMessage.new :a => [1, 2, 3, 4, 5]
+
+    assert_equal buf.to_s, msg.encode.to_s
   end
 
   def test_encode_packed_repeated_field
