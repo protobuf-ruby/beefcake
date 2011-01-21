@@ -261,6 +261,13 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_decode_merge
+    a = SimpleMessage.new :a => 1
+    b = SimpleMessage.new :a => 2
+
+    x = SimpleMessage.decode(a.encode)
+    SimpleMessage.decode(b.encode, x)
+
+    assert_equal b.a, x.a
   end
 
   def test_decode_default
