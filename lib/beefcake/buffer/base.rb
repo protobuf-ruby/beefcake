@@ -73,7 +73,12 @@ module Beefcake
     end
 
     def read(n)
-      buf.slice!(0, n)
+      case n
+      when Symbol
+        __send__("read_"+n.to_s)
+      else
+        buf.slice!(0, n)
+      end
     end
 
   end

@@ -106,6 +106,7 @@ module Beefcake
 
     module Decode
       def decode(buf, o=self.new)
+        # TODO: test for incomplete buffer
         while buf.length > 0
           fn, wire = buf.read_info
 
@@ -113,11 +114,10 @@ module Beefcake
           fld = fields[fn]
 
           # TODO: check if wire != wire_for(fld.type)
-          val = buf.__send__("read_"+fld.type.to_s)
+          val = buf.read(fld.type)
 
           o[fld.name] = val
         end
-
         o
       end
     end
