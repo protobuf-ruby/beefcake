@@ -201,8 +201,29 @@ class MessageTest < Test::Unit::TestCase
     assert_equal buf.to_s, msg.encode.to_s
   end
 
-
   ## Decoding
+  def test_decode_numerics
+    msg = NumericsMessage.new({
+      :int32     => B::MaxInt32,
+      :uint32    => B::MaxUint32,
+      :sint32    => B::MinInt32,
+      :fixed32   => B::MaxInt32,
+      :sfixed32  => B::MinInt32,
+
+      :int64     => B::MaxInt64,
+      :uint64    => B::MaxUint64,
+      :sint64    => B::MinInt64,
+      :fixed64   => B::MaxInt64,
+      :sfixed64  => B::MinInt64
+    })
+
+    got = NumericsMessage.decode(msg.encode)
+
+    msg.fields.values.each do |fld|
+      assert_equal msg[fld.name], got[fld.name], fld.name
+    end
+  end
+
   def test_wire_does_not_match_decoded_info
     #fail "TODO"
   end

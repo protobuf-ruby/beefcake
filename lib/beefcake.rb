@@ -104,8 +104,28 @@ module Beefcake
     end
 
 
+    module Decode
+      def decode(buf, o=self.new)
+        while buf.length > 0
+          fn, wire = buf.read_info
+
+          # TODO: check if fld.nil?
+          fld = fields[fn]
+
+          # TODO: check if wire != wire_for(fld.type)
+          val = buf.__send__("read_"+fld.type.to_s)
+
+          o[fld.name] = val
+        end
+
+        o
+      end
+    end
+
+
     def self.included(o)
       o.extend Dsl
+      o.extend Decode
       o.send(:include, Encode)
     end
 
