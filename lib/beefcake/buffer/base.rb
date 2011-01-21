@@ -33,7 +33,7 @@ module Beefcake
 
     def self.encodable?(type)
       return false if ! type.is_a?(Class)
-      pims = type.public_instance_methods.tap
+      pims = type.public_instance_methods
       pims.include?(:encode) || pims.include?("encode")
     end
 
