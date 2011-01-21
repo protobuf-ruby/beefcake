@@ -184,7 +184,7 @@ class MessageTest < Test::Unit::TestCase
     buf = Beefcake::Buffer.new
 
     # Varint
-    buf.append_info(0, 1)
+    buf.append_info(1, 0)
 
     # Give size in bytes
     buf.append_uint64 5

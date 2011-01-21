@@ -72,7 +72,7 @@ module Beefcake
         fields.values.sort.each do |fld|
           if fld.opts[:packed]
             bytes = encode!(Buffer.new, fld, 0)
-            buf.append_info(Buffer.wire_for(fld.type), fld.fn)
+            buf.append_info(fld.fn, Buffer.wire_for(fld.type))
             buf.append_uint64(bytes.length)
             buf << bytes
           else
