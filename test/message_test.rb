@@ -243,6 +243,12 @@ class MessageTest < Test::Unit::TestCase
     #fail "TODO"
   end
 
+  def test_decode_repeated_field
+  end
+
+  def test_decode_packed_repeated_field
+  end
+
   def test_decode_merge
     #fail "TODO"
   end
