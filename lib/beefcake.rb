@@ -139,8 +139,11 @@ module Beefcake
           end
 
           val = buf.read(fld.type)
-
-          o[fld.name] = val
+          if fld.rule == :repeated
+            (o[fld.name] ||= []) << val
+          else
+            o[fld.name] = val
+          end
         end
         o
       end

@@ -247,6 +247,10 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_decode_repeated_field
+    msg = RepeatedMessage.new :a => [1, 2, 3, 4, 5]
+    got = RepeatedMessage.decode(msg.encode)
+
+    assert_equal msg.a, got.a
   end
 
   def test_decode_packed_repeated_field
