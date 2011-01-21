@@ -76,18 +76,6 @@ module Beefcake
       buf.slice!(0, n)
     end
 
-    def method_missing(s, *args)
-      if s.to_s =~ /^append_tagged_(.*)$/
-        fn   = args.shift
-        wire = Buffer.wire_for($1.to_sym)
-
-        append_info(fn, wire)
-        __send__("append_#{$1}", *args)
-      else
-        super
-      end
-    end
-
   end
 
 end

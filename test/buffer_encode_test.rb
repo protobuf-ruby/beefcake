@@ -219,9 +219,4 @@ class BufferEncodeTest < Test::Unit::TestCase
     assert_equal "\007testing", @buf.to_s
   end
 
-  def test_tag
-    @buf.append_tagged_int32(1, 1)
-    assert_equal 8, @buf.to_s[0]
-  end
-
 end

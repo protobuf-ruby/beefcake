@@ -83,16 +83,16 @@ class MessageTest < Test::Unit::TestCase
   def test_encode_numerics
     buf = Beefcake::Buffer.new
 
-    buf.append_tagged_int32      1, B::MaxInt32
-    buf.append_tagged_uint32     2, B::MaxUint32
-    buf.append_tagged_sint32     3, B::MinInt32
-    buf.append_tagged_fixed32    4, B::MaxInt32
-    buf.append_tagged_sfixed32   5, B::MinInt32
-    buf.append_tagged_int64      6, B::MaxInt64
-    buf.append_tagged_uint64     7, B::MaxUint64
-    buf.append_tagged_sint64     8, B::MinInt64
-    buf.append_tagged_fixed64    9, B::MaxInt64
-    buf.append_tagged_sfixed64  10, B::MinInt64
+    buf.append(:int32, B::MaxInt32, 1)
+    buf.append(:uint32, B::MaxUint32, 2)
+    buf.append(:sint32, B::MinInt32, 3)
+    buf.append(:fixed32, B::MaxInt32, 4)
+    buf.append(:sfixed32, B::MinInt32, 5)
+    buf.append(:int64, B::MaxInt64, 6)
+    buf.append(:uint64, B::MaxUint64, 7)
+    buf.append(:sint64, B::MinInt64, 8)
+    buf.append(:fixed64, B::MaxInt64, 9)
+    buf.append(:sfixed64, B::MinInt64, 10)
 
     msg = NumericsMessage.new({
       :int32     => B::MaxInt32,
@@ -114,8 +114,8 @@ class MessageTest < Test::Unit::TestCase
   def test_encode_strings
     buf = Beefcake::Buffer.new
 
-    buf.append_tagged_string 1, "testing"
-    buf.append_tagged_bytes  2, "unixisawesome"
+    buf.append(:string, "testing", 1)
+    buf.append(:bytes, "unixisawesome", 2)
 
     msg = LendelsMessage.new({
       :string => "testing",
@@ -127,10 +127,10 @@ class MessageTest < Test::Unit::TestCase
 
   def test_encode_string_composite
     buf1 = Beefcake::Buffer.new
-    buf1.append_tagged_int32 1, 123
+    buf1.append(:int32, 123, 1)
 
     buf2 = Beefcake::Buffer.new
-    buf2.append_tagged_string 1, buf1
+    buf2.append(:string, buf1, 1)
 
     msg = CompositeMessage.new(
       :encodable => SimpleMessage.new(:a => 123)
@@ -148,7 +148,7 @@ class MessageTest < Test::Unit::TestCase
 
   def test_encode_enum
     buf = Beefcake::Buffer.new
-    buf.append_tagged_int32 1, 2
+    buf.append(:int32, 2, 1)
 
     msg = EnumsMessage.new :a => EnumsMessage::X::A
     assert_equal "\b\001", msg.encode.to_s
@@ -169,11 +169,11 @@ class MessageTest < Test::Unit::TestCase
   def test_encode_repeated_field
     buf = Beefcake::Buffer.new
 
-    buf.append_tagged_int32 1, 1
-    buf.append_tagged_int32 1, 2
-    buf.append_tagged_int32 1, 3
-    buf.append_tagged_int32 1, 4
-    buf.append_tagged_int32 1, 5
+    buf.append(:int32, 1, 1)
+    buf.append(:int32, 2, 1)
+    buf.append(:int32, 3, 1)
+    buf.append(:int32, 4, 1)
+    buf.append(:int32, 5, 1)
 
     msg = RepeatedMessage.new :a => [1, 2, 3, 4, 5]
 

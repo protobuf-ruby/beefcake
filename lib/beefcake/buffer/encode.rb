@@ -4,6 +4,15 @@ module Beefcake
 
   class Buffer
 
+    def append(type, val, fn)
+      if fn != 0
+        wire = Buffer.wire_for(type)
+        append_info(fn, wire)
+      end
+
+      __send__("append_"+type.to_s, val)
+    end
+
     def append_info(fn, wire)
       self << ((fn << 3) | wire)
     end
