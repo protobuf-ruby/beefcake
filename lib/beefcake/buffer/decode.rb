@@ -37,7 +37,7 @@ module Beefcake
       n = shift = 0
       while true
         if shift >= 64
-          raise BufferOverflow, "varint"
+          raise BufferOverflowError, "varint"
         end
         b = buf.slice!(0)
         n |= ((b & 0x7F) << shift)

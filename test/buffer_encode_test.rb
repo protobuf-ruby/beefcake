@@ -34,11 +34,11 @@ class BufferEncodeTest < Test::Unit::TestCase
     @buf.append_fixed32(B::MaxUint32)
     assert_equal "\377\377\377\377", @buf.to_s
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_fixed32(B::MinUint32 - 1)
     end
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_fixed32(B::MaxUint32 + 1)
     end
   end
@@ -55,11 +55,11 @@ class BufferEncodeTest < Test::Unit::TestCase
     @buf.append_fixed64(B::MaxUint64)
     assert_equal "\377\377\377\377\377\377\377\377", @buf.to_s
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_fixed64(B::MinUint64 - 1)
     end
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_fixed64(B::MaxUint64 + 1)
     end
   end
@@ -76,11 +76,11 @@ class BufferEncodeTest < Test::Unit::TestCase
     @buf.append_uint32(B::MaxUint32)
     assert_equal "\377\377\377\377\017", @buf.to_s
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_uint32(B::MinUint32 - 1)
     end
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_uint32(B::MaxUint32 + 1)
     end
   end
@@ -101,11 +101,11 @@ class BufferEncodeTest < Test::Unit::TestCase
     @buf.append_int32(B::MaxInt32)
     assert_equal "\377\377\377\377\007", @buf.to_s
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_int32(B::MinInt32 - 1)
     end
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_int32(B::MaxInt32 + 1)
     end
   end
@@ -126,11 +126,11 @@ class BufferEncodeTest < Test::Unit::TestCase
     @buf.append_int64(B::MaxInt64)
     assert_equal "\377\377\377\377\377\377\377\377\177", @buf.to_s
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_int64(B::MinInt64 - 1)
     end
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_int64(B::MaxInt64 + 1)
     end
   end
@@ -147,11 +147,11 @@ class BufferEncodeTest < Test::Unit::TestCase
     @buf.append_uint64(B::MaxUint64)
     assert_equal "\377\377\377\377\377\377\377\377\377\001", @buf.to_s
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_uint64(B::MinUint64 - 1)
     end
 
-    assert_raise B::OutOfRange do
+    assert_raise B::OutOfRangeError do
       @buf.append_uint64(B::MaxUint64 + 1)
     end
   end

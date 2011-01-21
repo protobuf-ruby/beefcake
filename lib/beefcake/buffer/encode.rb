@@ -15,7 +15,7 @@ module Beefcake
 
     def append_fixed32(n, tag=false)
       if ! (MinUint32..MaxUint32).include?(n)
-        raise OutOfRange, n
+        raise OutOfRangeError, n
       end
 
       self << [n].pack("V")
@@ -23,7 +23,7 @@ module Beefcake
 
     def append_fixed64(n)
       if ! (MinUint64..MaxUint64).include?(n)
-        raise OutOfRange, n
+        raise OutOfRangeError, n
       end
 
       self << [n & 0xFFFFFFFF, n >> 32].pack("VV")
@@ -31,7 +31,7 @@ module Beefcake
 
     def append_int32(n)
       if ! (MinInt32..MaxInt32).include?(n)
-        raise OutOfRange, n
+        raise OutOfRangeError, n
       end
 
       append_int64(n)
@@ -39,7 +39,7 @@ module Beefcake
 
     def append_uint32(n)
       if ! (MinUint32..MaxUint32).include?(n)
-        raise OutOfRange, n
+        raise OutOfRangeError, n
       end
 
       append_uint64(n)
@@ -47,7 +47,7 @@ module Beefcake
 
     def append_int64(n)
       if ! (MinInt64..MaxInt64).include?(n)
-        raise OutOfRange, n
+        raise OutOfRangeError, n
       end
 
       if n < 0
@@ -75,7 +75,7 @@ module Beefcake
 
     def append_uint64(n)
       if ! (MinUint64..MaxUint64).include?(n)
-        raise OutOfRange, n
+        raise OutOfRangeError, n
       end
 
       while true

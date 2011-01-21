@@ -42,13 +42,13 @@ module Beefcake
     alias :to_s   :buf
     alias :to_str :buf
 
-    class OutOfRange < StandardError
+    class OutOfRangeError < StandardError
       def initialize(n)
         super("Value of of range: %d" % [n])
       end
     end
 
-    class BufferOverflow < StandardError
+    class BufferOverflowError < StandardError
       def initialize(s)
         super("Too many bytes read for %s" % [s])
       end
