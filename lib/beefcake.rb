@@ -3,11 +3,19 @@ require 'beefcake/buffer'
 module Beefcake
   module Message
 
+    class WrongTypeError < StandardError
+      def initialize(name, exp, got)
+        super("Wrong type `#{got}` given for (#{name}).  Expected #{exp}")
+      end
+    end
+
+
     class InvalidValueError < StandardError
       def initialize(name, val)
         super("Invalid Value given for `#{name}`: #{val.inspect}")
       end
     end
+
 
     class RequiredFieldNotSetError < StandardError
       def initialize(name)
@@ -15,11 +23,13 @@ module Beefcake
       end
     end
 
+
     class Field < Struct.new(:rule, :name, :type, :fn, :opts)
       def <=>(o)
         fn <=> o.fn
       end
     end
+
 
     module Dsl
       def required(name, type, fn, opts={})
@@ -113,7 +123,11 @@ module Beefcake
           # TODO: check if fld.nil?
           fld = fields[fn]
 
-          # TODO: check if wire != wire_for(fld.type)
+          exp = Buffer.wire_for(fld.type)
+          if wire != exp
+            raise WrongTypeError.new(fld.name, exp, wire)
+          end
+
           val = buf.read(fld.type)
 
           o[fld.name] = val

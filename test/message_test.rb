@@ -225,7 +225,14 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_wire_does_not_match_decoded_info
-    #fail "TODO"
+    buf = Beefcake::Buffer.new
+
+    buf.append_info(1, 2) # string
+    buf.append_string("testing")
+
+    assert_raise Beefcake::Message::WrongTypeError do
+      SimpleMessage.decode(buf)
+    end
   end
 
   def test_decode_unset_required_field
