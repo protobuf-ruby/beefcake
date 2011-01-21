@@ -40,8 +40,73 @@ module Beefcake
       end
     end
 
+    module Encode
+
+      def encode(buf = Buffer.new)
+        validate!
+
+        if ! buf.respond_to?(:<<)
+          raise ArgumentError, "buf doesn't respond to `<<`"
+        end
+
+        if ! buf.is_a?(Buffer)
+          buf = Buffer.new(buf)
+        end
+
+        # TODO: Error if any required fields at nil
+
+        fields.values.sort.each do |fld|
+          if fld.opts[:packed]
+            bytes = encode!(Buffer.new, fld, 0)
+            buf.append_info(Buffer.wire_for(fld.type), fld.fn)
+            buf.append_uint64(bytes.length)
+            buf << bytes
+          else
+            encode!(buf, fld, fld.fn)
+          end
+        end
+
+        buf
+      end
+
+      def encode!(buf, fld, fn)
+        Array(self[fld.name]).each do |val|
+          case fld.type
+          when Class # encodable
+            # TODO: raise error if type != val.class
+            buf.append(:string, val.encode, fn)
+          when Module # enum
+            if ! valid_enum?(fld.type, val)
+              raise InvalidValueError.new(fld.name, val)
+            end
+
+            buf.append(:int32, val, fn)
+          else
+            buf.append(fld.type, val, fn)
+          end
+        end
+
+        buf
+      end
+
+      def valid_enum?(mod, val)
+        mod.constants.any? {|name| mod.const_get(name) == val }
+      end
+
+      def validate!
+        fields.values.each do |fld|
+          if fld.rule == :required && self[fld.name].nil?
+            raise RequiredFieldNotSetError, fld.name
+          end
+        end
+      end
+
+    end
+
+
     def self.included(o)
       o.extend Dsl
+      o.send(:include, Encode)
     end
 
     def initialize(attrs={})
@@ -62,62 +127,6 @@ module Beefcake
       __send__(k.to_s+"=", v)
     end
 
-    def validate!
-      fields.values.each do |fld|
-        if fld.rule == :required && self[fld.name].nil?
-          raise RequiredFieldNotSetError, fld.name
-        end
-      end
-    end
-
-    def encode(buf = Buffer.new)
-      validate!
-
-      if ! buf.respond_to?(:<<)
-        raise ArgumentError, "buf doesn't respond to `<<`"
-      end
-
-      if ! buf.is_a?(Buffer)
-        buf = Buffer.new(buf)
-      end
-
-      # TODO: Error if any required fields at nil
-
-      fields.values.sort.each do |fld|
-        if fld.opts[:packed]
-          bytes = encode!(Buffer.new, fld, 0)
-          buf.append_info(Buffer.wire_for(fld.type), fld.fn)
-          buf.append_uint64(bytes.length)
-          buf << bytes
-        else
-          encode!(buf, fld, fld.fn)
-        end
-      end
-
-      buf
-    end
-
-    def encode!(buf, fld, fn)
-      Array(self[fld.name]).each do |val|
-        case fld.type
-        when Class # encodable
-          # TODO: raise error if type != val.class
-            buf.append(:string, val.encode, fn)
-        when Module # enum
-          if ! valid_enum?(fld.type, val)
-            raise InvalidValueError.new(fld.name, val)
-          end
-
-          buf.append(:int32, val, fn)
-        else
-          buf.append(fld.type, val, fn)
-        end
-      end
-      buf
-    end
-
-    def valid_enum?(mod, val)
-      mod.constants.any? {|name| mod.const_get(name) == val }
-    end
   end
+
 end
