@@ -61,11 +61,17 @@ module Beefcake
     end
 
     def initialize(buf="")
-      @buf = buf
+      self.buf = buf
+    end
+
+    if ''.respond_to?(:force_encoding)
+      def buf=(buf)
+        @buf = buf.force_encoding('BINARY')
+      end
     end
 
     def length
-      @buf.length
+      @buf.respond_to?(:bytesize) ? @buf.bytesize : @buf.length
     end
 
     def <<(bytes)

@@ -42,7 +42,7 @@ module Beefcake
         if shift >= 64
           raise BufferOverflowError, "varint"
         end
-        b = buf.slice!(0)
+        b = buf.slice!(0).ord
         n |= ((b & 0x7F) << shift)
         shift += 7
         if (b & 0x80) == 0
