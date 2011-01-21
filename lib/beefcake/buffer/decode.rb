@@ -5,8 +5,11 @@ module Beefcake
   class Buffer
 
     def read_info
-      n = read_uint64
-      [n >> 3, n & 0x7]
+      n    = read_uint64
+      fn   = n >> 3
+      wire = n & 0x7
+
+      [fn, wire]
     end
 
     def read_string
