@@ -36,7 +36,7 @@ module Beefcake
 
     def initialize(attrs={})
       fields.values.each do |fld|
-        self[fld.name] = attrs[fld.name] || fld.opts[:default]
+        self[fld.name] = attrs[fld.name]
       end
     end
 

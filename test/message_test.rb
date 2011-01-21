@@ -65,15 +65,6 @@ end
 class MessageTest < Test::Unit::TestCase
   B = Beefcake::Buffer
 
-  ## Common Message things
-  def test_enum_default
-    msg = EnumsDefaultMessage.new
-    assert_equal "\b\002", msg.encode.to_s
-    msg = EnumsDefaultMessage.new :a => 1
-    assert_equal "\b\001", msg.encode.to_s
-  end
-
-
   ## Encoding
   def test_encode_numerics
     buf = Beefcake::Buffer.new
