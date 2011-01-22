@@ -133,7 +133,6 @@ module Beefcake
           # We don't have a field for with index fn.
           # Ignore this data and move on.
           if fld.nil?
-            p [:skip, fn, wire, buf]
             buf.skip(wire)
             next
           end
