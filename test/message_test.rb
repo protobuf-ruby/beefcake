@@ -58,7 +58,7 @@ class EnumsDefaultMessage
     B = 2
   end
 
-  required :a, X, 1, :default => X::B
+  optional :a, X, 1, :default => X::B
 end
 
 
@@ -271,6 +271,8 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_decode_default
+    got = EnumsDefaultMessage.decode("")
+    assert_equal EnumsDefaultMessage.fields[1].opts[:default], got.a
   end
 
 end

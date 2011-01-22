@@ -156,7 +156,14 @@ module Beefcake
           else
             o[fld.name] = val
           end
+
         end
+
+        # Set defaults
+        fields.values.each do |fld|
+          o[fld.name] ||= fld.opts[:default]
+        end
+
         o
       end
     end
