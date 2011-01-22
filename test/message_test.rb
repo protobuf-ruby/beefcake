@@ -275,4 +275,10 @@ class MessageTest < Test::Unit::TestCase
     assert_equal EnumsDefaultMessage.fields[1].opts[:default], got.a
   end
 
+  def test_decode_unset_required_fields
+    assert_raises Beefcake::Message::RequiredFieldNotSetError do
+      NumericsMessage.decode("")
+    end
+  end
+
 end

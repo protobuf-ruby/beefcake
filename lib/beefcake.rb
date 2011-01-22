@@ -168,6 +168,8 @@ module Beefcake
           o[f.name] ||= f.opts[:default]
         end
 
+        o.validate!
+
         o
       end
     end
