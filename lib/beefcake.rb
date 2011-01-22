@@ -120,6 +120,10 @@ module Beefcake
 
     module Decode
       def decode(buf, o=self.new)
+        if ! buf.is_a?(Buffer)
+          buf = Buffer.new(buf)
+        end
+
         # TODO: test for incomplete buffer
         while buf.length > 0
           fn, wire = buf.read_info
