@@ -82,10 +82,10 @@ module Beefcake
 
     def skip(wire)
       case wire
-      when 0: read_uint64
-      when 1: read_fixed64
-      when 2: read_string
-      when 5: read_fixed32
+      when 0 then read_uint64
+      when 1 then read_fixed64
+      when 2 then read_string
+      when 5 then read_fixed32
       end
     end
 
