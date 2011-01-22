@@ -105,7 +105,7 @@ Currently Beefcake is tested and working on:
   Ruby 1.9.2
   JRuby 1.5.6
 
-  There is a bug in Rubinius preventing propoer ZigZag encoding.
+  There is a bug in Rubinius preventing proper ZigZag encoding.
   The team is aware and I'm sure they're working on a fix.
 
 Nice to have:
@@ -116,3 +116,7 @@ Nice to have:
 # Further Reading
 
 http://code.google.com/apis/protocolbuffers/docs/encoding.html
+
+# Thank You
+
+Aman Gupta (tmm1) for help with cross VM support and performance enhancements.
