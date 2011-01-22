@@ -1,45 +1,62 @@
 # Beefcake (A sane Google Protocol Buffers library for Ruby)
 ## It's all about being Buf; ProtoBuf.
 
-## NOTICE:  This project is still a moving target.  Decoding
-##          will be brought back tomorrow (1/12/2011).
-
 # Example
 
     require 'beefcake'
 
-    class Point
-      includ Beefcake::Message
+    class Variety
+      include Beefcake::Message
 
+      # Required
       required :x, :int32, 1
       required :y, :int32, 2
+
+      # Optional
       optional :tag, :string, 3
+
+      # Repeated
+      repeated :ary,  :fixed64, 4
+      repeated :pary, :fixed64, 5, :packed => true
+
+      # Enums - Simply use a Module (NOTE: defaults are optional)
+      module Foonum
+        A = 1
+        B = 2
+      end
+
+      # As per the spec, defaults are only set at the end
+      # of decoding a message, not on object creation.
+      optional :foo, Foonum, 6, :default => Foonum::B
     end
 
-    point = Point.new :x => 1, :y => 2
+    x = Variety.new :x => 1, :y => 2
     # or
-    point = Point.new
-    point.x = 1
-    point.y = 2
+    x = Variety.new
+    x.x = 1
+    x.y = 2
 
 ## Encoding
 
 Any object responding to `<<` can accept encoding
 
     s = ""
-    point.encode(s)
+    x.encode(s)
     p [:s, s]
     # or (because encode returns the string/stream)
-    p [:s, point.encode]
+    p [:s, x.encode]
     # or
-    open("point.dat") do |f|
-      point.encode(f)
+    open("x.dat") do |f|
+      x.encode(f)
     end
 
     # decode
-    encoded = point.encode
-    decoded = Point.decode(encoded)
-    p [:point, decoded]
+    encoded = x.encode
+    decoded = Variety.decode(encoded)
+    p [:x, decoded]
+
+    # decode merge
+    Variety.decoded(more_data, decoded)
 
 # Why?
 
@@ -54,10 +71,12 @@ Any object responding to `<<` can accept encoding
 
   Example (for the above):
 
-    message Point {
+    message Variety {
       required int32 x = 1
       required int32 y = 2
       optional string tag = 3
+
+      ...
     }
 
   In the near future, a generator would be nice.  I welcome anyone willing
@@ -78,17 +97,21 @@ Testing:
     $ cd /path/to/beefcake
     $ turn
 
-# TODO
+VMs:
 
-Very, very near future:
+Currently Beefcake is tested and working on:
 
-* Enum support
+  Ruby 1.8.7
+  Ruby 1.9.2
+  JRuby 1.5.6
+
+  There is a bug in Rubinius preventing propoer ZigZag encoding.
+  The team is aware and I'm sure they're working on a fix.
 
 Nice to have:
 
 * `.proto` -> Ruby generator
 * Groups (would be nice for accessing older protos)
-* Remove need to encode embeded messages before writing to the wire.
 
 # Further Reading
 
