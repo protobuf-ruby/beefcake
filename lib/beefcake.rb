@@ -164,8 +164,8 @@ module Beefcake
         end
 
         # Set defaults
-        fields.values.each do |fld|
-          o[fld.name] ||= fld.opts[:default]
+        fields.values.each do |f|
+          o[f.name] ||= f.opts[:default]
         end
 
         o
