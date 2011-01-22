@@ -15,6 +15,7 @@ module Beefcake
     def read_string
       read(read_uint64)
     end
+    alias :read_bytes :read_string
 
     def read_fixed32
       bytes = read(4)
