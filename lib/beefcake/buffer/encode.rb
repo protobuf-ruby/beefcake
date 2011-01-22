@@ -10,7 +10,7 @@ module Beefcake
         append_info(fn, wire)
       end
 
-      __send__("append_"+type.to_s, val)
+      __send__("append_#{type}", val)
     end
 
     def append_info(fn, wire)
@@ -18,7 +18,7 @@ module Beefcake
     end
 
     def append_fixed32(n, tag=false)
-      if ! (MinUint32..MaxUint32).include?(n)
+      if n < MinUint32 or n > MaxUint32
         raise OutOfRangeError, n
       end
 
@@ -26,7 +26,7 @@ module Beefcake
     end
 
     def append_fixed64(n)
-      if ! (MinUint64..MaxUint64).include?(n)
+      if n < MinUint64 or n > MaxUint64
         raise OutOfRangeError, n
       end
 
@@ -34,7 +34,7 @@ module Beefcake
     end
 
     def append_int32(n)
-      if ! (MinInt32..MaxInt32).include?(n)
+      if n < MinInt32 or n > MaxInt32
         raise OutOfRangeError, n
       end
 
@@ -42,7 +42,7 @@ module Beefcake
     end
 
     def append_uint32(n)
-      if ! (MinUint32..MaxUint32).include?(n)
+      if n < MinUint32 or n > MaxUint32
         raise OutOfRangeError, n
       end
 
@@ -50,7 +50,7 @@ module Beefcake
     end
 
     def append_int64(n)
-      if ! (MinInt64..MaxInt64).include?(n)
+      if n < MinInt64 or n > MaxInt64
         raise OutOfRangeError, n
       end
 
@@ -78,7 +78,7 @@ module Beefcake
     end
 
     def append_uint64(n)
-      if ! (MinUint64..MaxUint64).include?(n)
+      if n < MinUint64 or n > MaxUint64
         raise OutOfRangeError, n
       end
 

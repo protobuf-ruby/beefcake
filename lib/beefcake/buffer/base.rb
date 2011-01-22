@@ -81,7 +81,7 @@ module Beefcake
     def read(n)
       case n
       when Symbol
-        __send__("read_"+n.to_s)
+        __send__("read_#{n}")
       else
         buf.slice!(0, n)
       end

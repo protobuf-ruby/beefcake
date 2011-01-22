@@ -194,7 +194,7 @@ module Beefcake
     end
 
     def []=(k, v)
-      __send__(k.to_s+"=", v)
+      __send__("#{k}=", v)
     end
 
   end
