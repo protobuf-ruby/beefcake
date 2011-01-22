@@ -233,10 +233,6 @@ class MessageTest < Test::Unit::TestCase
     end
   end
 
-  def test_decode_unset_required_field
-    #fail "TODO"
-  end
-
   def test_decode_unknown_field_number
     buf = Beefcake::Buffer.new
     buf.append(:string, "testing", 2)
