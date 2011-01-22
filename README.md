@@ -1,6 +1,10 @@
 # Beefcake (A sane Google Protocol Buffers library for Ruby)
 ## It's all about being Buf; ProtoBuf.
 
+# Install
+
+    $ gem install beefcake
+
 # Example
 
     require 'beefcake'
