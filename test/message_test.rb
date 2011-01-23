@@ -277,4 +277,10 @@ class MessageTest < Test::Unit::TestCase
     end
   end
 
+  def test_decode_enum
+    msg = EnumsMessage.new(:a => 1).encode
+    got = EnumsMessage.decode(msg)
+    assert_equal 1, got.a
+  end
+
 end

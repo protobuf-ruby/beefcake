@@ -14,7 +14,7 @@ module Beefcake
 
     def self.wire_for(type)
       case type
-      when :int32, :uint32, :sint32, :int64, :uint64, :sint64, :bool
+      when :int32, :uint32, :sint32, :int64, :uint64, :sint64, :bool, Module
         0
       when :fixed64, :sfixed64, :double
         1
@@ -82,6 +82,8 @@ module Beefcake
       case n
       when Symbol
         __send__("read_#{n}")
+      when Module
+        read_uint64
       else
         buf.slice!(0, n)
       end
