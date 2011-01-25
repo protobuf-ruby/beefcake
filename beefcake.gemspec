@@ -3,8 +3,8 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
 
   s.name = 'beefcake'
-  s.version = '0.1.1'
-  s.date = '2011-01-21'
+  s.version = '0.1.2'
+  s.date = '2011-01-25'
 
   s.description = "A sane protobuf library for Ruby"
   s.summary     = s.description
@@ -20,9 +20,7 @@ Gem::Specification.new do |s|
   s.test_files = s.files.select {|path| path =~ /^test\/.*_test.rb/}
 
   s.extra_rdoc_files = %w[README.md LICENSE]
-  s.add_dependency 'crack',    '>= 0.1.4'
-  s.add_dependency 'ruby-hmac',    '>= 0.3.2'
-  s.add_development_dependency 'contest', '>= 0.1.2'
+  s.add_development_dependency 'turn'
 
   s.has_rdoc = true
   s.homepage = "http://github.com/bmizerany/beefcake"
