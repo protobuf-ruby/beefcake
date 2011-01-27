@@ -105,12 +105,11 @@ Source:
 
 Currently Beefcake is tested and working on:
 
+* Ruby 1.8.6
 * Ruby 1.8.7
 * Ruby 1.9.2
 * JRuby 1.5.6
-
-There is a bug in Rubinius preventing proper ZigZag encoding.
-The team is aware and I'm sure they're working on a fix.
+* Rubinius edge
 
 ## Future
 
