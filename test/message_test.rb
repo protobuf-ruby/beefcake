@@ -76,6 +76,11 @@ class PackedRepeatedMessage
   repeated :a, :int32, 1, :packed => true
 end
 
+class RepeatedNestedMessage
+  include Beefcake::Message
+
+  repeated :simple, SimpleMessage, 1
+end
 
 class MessageTest < Test::Unit::TestCase
   B = Beefcake::Buffer
@@ -282,6 +287,16 @@ class MessageTest < Test::Unit::TestCase
     msg = EnumsMessage.new(:a => 1).encode
     got = EnumsMessage.decode(msg)
     assert_equal 1, got.a
+  end
+
+  def test_decode_repeated_nested
+    msg = RepeatedNestedMessage.new(:simple =>
+                                    [SimpleMessage.new(:a => 1),
+                                     SimpleMessage.new(:b => "hello")]).encode
+    got = RepeatedNestedMessage.decode(msg)
+    assert_equal 2, got.simple.size
+    assert_equal 1, got.simple[0].a
+    assert_equal "hello", got.simple[1].b
   end
 
   def test_equality

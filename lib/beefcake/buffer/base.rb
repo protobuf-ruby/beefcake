@@ -14,6 +14,12 @@ module Beefcake
 
     def self.wire_for(type)
       case type
+      when Class
+        if encodable?(type)
+          2
+        else
+          raise UnknownType, type
+        end
       when :int32, :uint32, :sint32, :int64, :uint64, :sint64, :bool, Module
         0
       when :fixed64, :sfixed64, :double
@@ -23,11 +29,7 @@ module Beefcake
       when :fixed32, :sfixed32, :float
         5
       else
-        if encodable?(type)
-          2
-        else
-          raise UnknownType, type
-        end
+        raise UnknownType, type
       end
     end
 
@@ -80,6 +82,8 @@ module Beefcake
 
     def read(n)
       case n
+      when Class
+        n.decode(read_string)
       when Symbol
         __send__("read_#{n}")
       when Module
