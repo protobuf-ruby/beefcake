@@ -202,6 +202,12 @@ module Beefcake
       fields.values.all? {|fld| self[fld.name] == o[fld.name] }
     end
 
+    def inspect
+      set = fields.values.select {|fld| self[fld.name] != nil }
+      flds = set.map {|fld| "#{fld.name}: #{self[fld.name].inspect}" }
+      "<#{self.class.name} #{flds.join(", ")}>"
+    end
+
   end
 
 end

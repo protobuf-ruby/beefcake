@@ -28,7 +28,8 @@ end
 class SimpleMessage
   include Beefcake::Message
 
-  optional :a, :int32, 1
+  optional :a, :int32,  1
+  optional :b, :string, 2
 end
 
 
@@ -289,6 +290,15 @@ class MessageTest < Test::Unit::TestCase
     assert_equal a, b
     c = SimpleMessage.new :a => 2
     assert_not_equal b, c
+  end
+
+  def test_inspect
+    msg = SimpleMessage.new :a => 1
+    assert_equal "<SimpleMessage a: 1>", msg.inspect
+    msg.b = "testing"
+    assert_equal "<SimpleMessage a: 1, b: \"testing\">", msg.inspect
+    msg.a = nil
+    assert_equal "<SimpleMessage b: \"testing\">", msg.inspect
   end
 
 end
