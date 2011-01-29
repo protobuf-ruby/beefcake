@@ -198,6 +198,10 @@ module Beefcake
       __send__("#{k}=", v)
     end
 
+    def ==(o)
+      fields.values.all? {|fld| self[fld.name] == o[fld.name] }
+    end
+
   end
 
 end

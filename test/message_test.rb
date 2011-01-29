@@ -283,4 +283,12 @@ class MessageTest < Test::Unit::TestCase
     assert_equal 1, got.a
   end
 
+  def test_equality
+    a = SimpleMessage.new :a => 1
+    b = SimpleMessage.new :a => 1
+    assert_equal a, b
+    c = SimpleMessage.new :a => 2
+    assert_not_equal b, c
+  end
+
 end
