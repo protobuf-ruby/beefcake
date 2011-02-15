@@ -318,4 +318,11 @@ class MessageTest < Test::Unit::TestCase
     assert_equal "<SimpleMessage b: \"testing\">", msg.inspect
   end
 
+  def test_inspect_enums
+    msg = EnumsMessage.new :a => 1
+    assert_equal "<EnumsMessage a: A(1)>", msg.inspect
+    msg.a = 2
+    assert_equal "<EnumsMessage a: -NA-(2)>", msg.inspect
+  end
+
 end

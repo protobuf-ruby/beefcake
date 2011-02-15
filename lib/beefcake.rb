@@ -104,7 +104,16 @@ module Beefcake
       end
 
       def valid_enum?(mod, val)
-        mod.constants.any? {|name| mod.const_get(name) == val }
+        !!name_for(mod, val)
+      end
+
+      def name_for(mod, val)
+        mod.constants.each do |name|
+          if mod.const_get(name) == val
+            return name
+          end
+        end
+        nil
       end
 
       def validate!
@@ -204,7 +213,19 @@ module Beefcake
 
     def inspect
       set = fields.values.select {|fld| self[fld.name] != nil }
-      flds = set.map {|fld| "#{fld.name}: #{self[fld.name].inspect}" }
+
+      flds = set.map do |fld|
+        val = self[fld.name]
+
+        case fld.type
+        when Module
+          title = name_for(fld.type, val) || "-NA-"
+          "#{fld.name}: #{title}(#{val.inspect})"
+        else
+          "#{fld.name}: #{val.inspect}"
+        end
+      end
+
       "<#{self.class.name} #{flds.join(", ")}>"
     end
 
