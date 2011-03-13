@@ -229,6 +229,15 @@ module Beefcake
       "<#{self.class.name} #{flds.join(", ")}>"
     end
 
+    def to_hash
+      fields.values.inject({}) do |h, fld|
+        if v = self[fld.name]
+          h[fld.name] = v
+        end
+        h
+      end
+    end
+
   end
 
 end

@@ -325,4 +325,10 @@ class MessageTest < Test::Unit::TestCase
     assert_equal "<EnumsMessage a: -NA-(2)>", msg.inspect
   end
 
+  def test_to_hash
+    msg =  SimpleMessage.new :a => 1
+    exp = { :a => 1 }
+    assert_equal(exp, msg.to_hash)
+  end
+
 end
