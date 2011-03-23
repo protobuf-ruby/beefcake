@@ -139,10 +139,10 @@ module Beefcake
     T = CodeGeneratorRequest::FieldDescriptorProto::Type
 
 
-    def self.compile(req)
+    def self.compile(ns, req)
       file = req.proto_file.map do |file|
         g = new(StringIO.new)
-        g.compile(file)
+        g.compile(ns, file)
 
         g.c.rewind
         CodeGeneratorResponse::File.new(
@@ -230,19 +230,29 @@ module Beefcake
       b.name_for(mod, val).gsub(/.*_/, "").downcase
     end
 
-    def compile(file)
+    def compile(ns, file)
       c.puts "## Generated from #{file.name} for #{file.package}"
+
+      ns.each do |name|
+        c.puts "module #{name}"
+      end
 
       file.message_type.each do |mt|
         message!(file.package, mt)
+      end
+
+      ns.each do |name|
+        c.puts "end"
       end
     end
 
   end
 end
 
+ns = (ENV["BEEFCAKE_NAMESPACE"] || "").split("::")
+
 req = CodeGeneratorRequest.decode(STDIN.read)
-res = Beefcake::Generator.compile(req)
+res = Beefcake::Generator.compile(ns, req)
 
 # Send it out!
 STDOUT.print(res.encode)
