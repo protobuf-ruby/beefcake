@@ -67,25 +67,14 @@ Any object responding to `<<` can accept encoding
   Ruby deserves and needs first-class ProtoBuf support.
   Other libs didn't feel very "Ruby" to me and were hard to parse.
 
-# Caveats
+# Generate code from `.proto` file
 
-  Currently Beefcake doesn't parse `.proto` files.  This is OK for now.
-  In the simple case, you can create message types by hand; This is Ruby
-  after all.
+    $ protoc --beefcake_out output/path -I path/to/proto/files/dir path/to/proto/file
 
-  Example (for the above):
+You can set the BEEFCAKE_NAMESPACE variable to generate the classes under a
+desired namespace. (i.e. App::Foo::Bar)
 
-    message Variety {
-      required int32 x = 1
-      required int32 y = 2
-      optional string tag = 3
-
-      ...
-    }
-
-  In the near future, a generator would be nice.  I welcome anyone willing
-  to work on it to submit patches.  The other ruby libs lacked things I would
-  like, such as an optional namespace param rather than installing on (main).
+# Misc
 
   This library was built with EventMachine in mind.  Not just blocking-IO.
 
