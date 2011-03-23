@@ -222,6 +222,8 @@ module Beefcake
         val = self[fld.name]
 
         case fld.type
+        when Class
+          "#{fld.name}: #{val.inspect}"
         when Module
           title = name_for(fld.type, val) || "-NA-"
           "#{fld.name}: #{title}(#{val.inspect})"
