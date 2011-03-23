@@ -211,6 +211,7 @@ module Beefcake
     end
 
     def ==(o)
+      return false if o == nil
       fields.values.all? {|fld| self[fld.name] == o[fld.name] }
     end
 
