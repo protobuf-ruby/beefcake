@@ -120,11 +120,11 @@ class MessageTest < Test::Unit::TestCase
   def test_encode_strings
     buf = Beefcake::Buffer.new
 
-    buf.append(:string, "testing", 1)
+    buf.append(:string, "test\ning", 1)
     buf.append(:bytes, "unixisawesome", 2)
 
     msg = LendelsMessage.new({
-      :string => "testing",
+      :string => "test\ning",
       :bytes  => "unixisawesome"
     })
 

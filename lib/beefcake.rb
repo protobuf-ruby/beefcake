@@ -84,7 +84,10 @@ module Beefcake
       end
 
       def encode!(buf, fld, fn)
-        Array(self[fld.name]).each do |val|
+        v = self[fld.name]
+        v = v.is_a?(Array) ? v : [v]
+
+        v.compact.each do |val|
           case fld.type
           when Class # encodable
             # TODO: raise error if type != val.class
