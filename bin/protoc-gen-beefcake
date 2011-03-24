@@ -133,7 +133,7 @@ end
 
 
 module Beefcake
-  class Generator < Struct.new(:c)
+  class Generator
 
     L = CodeGeneratorRequest::FieldDescriptorProto::Label
     T = CodeGeneratorRequest::FieldDescriptorProto::Type
@@ -154,45 +154,67 @@ module Beefcake
       CodeGeneratorResponse.new(:file => file)
     end
 
+    attr_reader :c
+
+    def initialize(c)
+      @c = c
+      @n = 0
+    end
+
     def file!(file)
-      c.puts "## Generated from #{file.name} for #{file.package}"
+      puts "## Generated from #{file.name} for #{file.package}"
 
       file.message_type.each do |mt|
         message!(mt)
       end
     end
 
+    def indent(&blk)
+      @n += 1
+      blk.call
+      @n -= 1
+    end
+
+    def indent!(n)
+      @n = n
+    end
+
     def message!(pkg, mt)
-      c.puts
-      c.puts "class #{mt.name}"
-      c.puts "  include Beefcake::Message"
-      c.puts
+      puts
+      puts "class #{mt.name}"
 
-      mt.enum_type.each do |et|
-        enum!(et)
+      indent do
+        puts "include Beefcake::Message"
+        puts
+
+        mt.enum_type.each do |et|
+          enum!(et)
+        end
+
+        ## Generate Types
+        (mt.nested_type || []).each do |nt|
+          message!(nt)
+        end
+        puts
+
+        ## Generate fields
+        (mt.field || []).each do |f|
+          field!(pkg, f)
+        end
+        puts
       end
 
-      ## Generate Types
-      (mt.nested_type || []).each do |nt|
-        message!(nt)
-      end
-      c.puts
-
-      ## Generate fields
-      (mt.field || []).each do |f|
-        field!(pkg, f)
-      end
-      c.puts
-
-      c.puts "end"
+      puts "end"
     end
 
     def enum!(et)
-      c.puts "  module #{et.name}"
-      et.value.each do |v|
-        c.puts "    %s = %d" % [v.name, v.number]
+      puts "module #{et.name}"
+      indent do
+        et.value.each do |v|
+          puts "%s = %d" % [v.name, v.number]
+        end
       end
-      c.puts "  end"
+      puts "end"
     end
 
     def field!(pkg, f)
@@ -216,13 +238,13 @@ module Beefcake
       end
 
       # Finally, generate the declaration
-      c.print "  %s %s, %s, %d" % [label, name, type, f.number]
+      out = "%s %s, %s, %d" % [label, name, type, f.number]
 
       if f.default_value
-        c.print ", :default => #{f.default_value}"
+        out += ", :default => #{f.default_value}"
       end
 
-      c.puts
+      puts out
     end
 
     # Determines the name for a 
@@ -231,19 +253,34 @@ module Beefcake
     end
 
     def compile(ns, file)
-      c.puts "## Generated from #{file.name} for #{file.package}"
-      c.puts "require \"beefcake\""
+      puts "## Generated from #{file.name} for #{file.package}"
+      puts "require \"beefcake\""
+      puts
 
-      ns.each do |name|
-        c.puts "module #{name}"
+      ns!(*ns) do
+        file.message_type.each do |mt|
+          message!(file.package, mt)
+        end
       end
+    end
 
-      file.message_type.each do |mt|
-        message!(file.package, mt)
+    def ns!(n, *tail, &blk)
+      puts "module #{n}"
+      indent do
+        if tail.empty?
+          blk.call
+        else
+          ns!(*tail, &blk)
+        end
       end
+      puts "end"
+    end
 
-      ns.each do |name|
-        c.puts "end"
+    def puts(msg=nil)
+      if msg
+        c.puts(("  " * @n) + msg)
+      else
+        c.puts
       end
     end
 
