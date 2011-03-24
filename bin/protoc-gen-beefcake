@@ -232,6 +232,7 @@ module Beefcake
 
     def compile(ns, file)
       c.puts "## Generated from #{file.name} for #{file.package}"
+      c.puts "require \"beefcake\""
 
       ns.each do |name|
         c.puts "module #{name}"
