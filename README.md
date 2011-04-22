@@ -112,4 +112,5 @@ http://code.google.com/apis/protocolbuffers/docs/encoding.html
 
 # Thank You
 
+Keith Rarick (kr) for help with encoding/decoding.
 Aman Gupta (tmm1) for help with cross VM support and performance enhancements.
