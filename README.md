@@ -104,7 +104,6 @@ Currently Beefcake is tested and working on:
 
 Nice to have:
 
-* `.proto` -> Ruby generator
 * Groups (would be nice for accessing older protos)
 
 # Further Reading
