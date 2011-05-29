@@ -8,6 +8,14 @@ class GeneratorTest < Test::Unit::TestCase
     @req = CodeGeneratorRequest.decode(mock_request)
   end
 
+  if "".respond_to?(:encoding)
+    def test_request_has_filenames_as_binary
+      @req.proto_file.each do |file|
+        assert_equal Encoding.find("ASCII-8BIT"), file.name.encoding
+      end
+    end
+  end
+
   def test_generate_empty_namespace
     @res = Beefcake::Generator.compile([], @req)
     assert_equal(CodeGeneratorResponse, @res.class)

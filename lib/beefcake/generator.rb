@@ -1,3 +1,8 @@
+# encoding: ASCII-8BIT
+# The above line allows concatenation of constant strings like ".pb.rb" to
+# maintain the internal format of the buffers, rather than converting the
+# buffer to US-ASCII
+
 require 'beefcake'
 require 'stringio'
 
