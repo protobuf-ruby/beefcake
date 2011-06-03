@@ -4,7 +4,8 @@ class GeneratorTest < Test::Unit::TestCase
 
   def setup
     # Load up the generator request for the addressbook.proto example
-    mock_request = File.read(File.expand_path("../code_generator_request.dat", __FILE__))
+    dat = File.dirname(__FILE__) + "/../dat/code_generator_request.dat"
+    mock_request = File.read(dat)
     @req = CodeGeneratorRequest.decode(mock_request)
   end
 
