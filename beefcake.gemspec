@@ -1,34 +1,21 @@
+# -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require "beefcake/version"
+
 Gem::Specification.new do |s|
-  s.specification_version = 2 if s.respond_to? :specification_version=
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.name        = "beefcake"
+  s.version     = Beefcake::VERSION
+  s.platform    = Gem::Platform::RUBY
+  s.authors     = ["TODO: Write your name"]
+  s.email       = ["TODO: Write your email address"]
+  s.homepage    = ""
+  s.summary     = %q{TODO: Write a gem summary}
+  s.description = %q{TODO: Write a gem description}
 
-  s.name = 'beefcake'
-  s.version = '0.3.1'
-  s.date = '2011-03-23'
+  s.rubyforge_project = "beefcake"
 
-  s.description = "A sane protobuf library for Ruby"
-  s.summary     = s.description
-
-  s.authors = ["Blake Mizerany"]
-
-  # = MANIFEST =
-  s.files = %w[LICENSE README.md] + Dir["{lib,test}/**/*.rb"] +
-    ["bin/protoc-gen-beefcake"]
-
-  s.executables = ["protoc-gen-beefcake"]
-
-
-  # = MANIFEST =
-
-  s.test_files = s.files.select {|path| path =~ /^test\/.*_test.rb/}
-
-  s.extra_rdoc_files = %w[README.md LICENSE]
-  s.add_development_dependency 'turn'
-
-  s.has_rdoc = true
-  s.homepage = "http://github.com/bmizerany/beefcake"
-  s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Sinatra", "--main", "README.rdoc"]
-  s.require_paths = %w[lib]
-  s.rubyforge_project = 'beefcake'
-  s.rubygems_version = '1.1.1'
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.require_paths = ["lib"]
 end
