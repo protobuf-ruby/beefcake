@@ -82,6 +82,12 @@ class RepeatedNestedMessage
   repeated :simple, SimpleMessage, 1
 end
 
+class BoolMessage
+  include Beefcake::Message
+
+  required :bool, :bool, 1
+end
+
 class MessageTest < Test::Unit::TestCase
   B = Beefcake::Buffer
 
@@ -170,6 +176,13 @@ class MessageTest < Test::Unit::TestCase
     assert_raises Beefcake::Message::RequiredFieldNotSetError do
       NumericsMessage.new.encode
     end
+  end
+
+  def test_decode_required_bool
+    msg = BoolMessage.new :bool => false
+    enc = msg.encode
+    dec = BoolMessage.decode(enc)
+    assert_equal false, dec.bool
   end
 
   def test_encode_repeated_field

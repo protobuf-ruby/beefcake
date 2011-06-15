@@ -172,6 +172,7 @@ module Beefcake
 
         # Set defaults
         fields.values.each do |f|
+	  next if o[f.name] == false
           o[f.name] ||= f.opts[:default]
         end
 
