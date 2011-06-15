@@ -161,17 +161,13 @@ module Beefcake
             while tmp.length > 0
               o[fld.name] << tmp.read(fld.type)
             end
-
-            next
-          end
-
-          val = buf.read(fld.type)
-          if fld.rule == :repeated
+	  elsif fld.rule == :repeated
+            val = buf.read(fld.type)
             (o[fld.name] ||= []) << val
           else
+            val = buf.read(fld.type)
             o[fld.name] = val
           end
-
         end
 
         # Set defaults
