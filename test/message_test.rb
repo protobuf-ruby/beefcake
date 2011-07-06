@@ -88,6 +88,13 @@ class BoolMessage
   required :bool, :bool, 1
 end
 
+class LargeFieldNumberMessage
+  include Beefcake::Message
+
+  required :field_1, :string, 1
+  required :field_2, :string, 100
+end
+
 class MessageTest < Test::Unit::TestCase
   B = Beefcake::Buffer
 
@@ -216,6 +223,18 @@ class MessageTest < Test::Unit::TestCase
     buf.append_int32 5
 
     msg = PackedRepeatedMessage.new :a => [1, 2, 3, 4, 5]
+
+    assert_equal buf.to_s, msg.encode.to_s
+  end
+
+  def test_encode_large_field_number
+    buf = Beefcake::Buffer.new
+    buf.append(:string, "abc", 1)
+    buf.append(:string, "123", 100)
+
+    msg = LargeFieldNumberMessage.new
+    msg.field_1 = "abc"
+    msg.field_2 = "123"
 
     assert_equal buf.to_s, msg.encode.to_s
   end

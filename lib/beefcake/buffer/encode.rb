@@ -14,7 +14,8 @@ module Beefcake
     end
 
     def append_info(fn, wire)
-      self << ((fn << 3) | wire)
+      #self << ((fn << 3) | wire)
+      append_uint32((fn << 3) | wire)
     end
 
     def append_fixed32(n, tag=false)
