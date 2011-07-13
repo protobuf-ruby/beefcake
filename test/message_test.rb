@@ -343,6 +343,13 @@ class MessageTest < Test::Unit::TestCase
     assert_equal "<CompositeMessage encodable: <SimpleMessage a: 1>>", msg.inspect
   end
 
+  def test_decode_nested_types
+    msg = CompositeMessage.new(:encodable => SimpleMessage.new(:a => 1))
+    enc = msg.encode
+    dec = CompositeMessage.decode(enc)
+    assert_equal "<CompositeMessage encodable: <SimpleMessage a: 1>>", dec.inspect
+  end
+
   def test_to_hash
     msg =  SimpleMessage.new :a => 1
     exp = { :a => 1 }
