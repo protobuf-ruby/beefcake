@@ -100,10 +100,27 @@ Currently Beefcake is tested and working on:
 * JRuby 1.5.6
 * Rubinius edge
 
+
+## Support Features
+
+* Optional fields
+* Required fields
+* Repeated fields
+* Packed Repeated Fields
+* Varint fields
+* 32-bit fields
+* 64-bit fields
+* Length delemited fields
+* Embeded Messages
+* Unknown fields are ignored (as per spec)
+* Enums
+* Defaults (i.e. `optional :foo, :string, :default => "bar"`)
+
+
 ## Future
 
-Nice to have:
-
+* Imports
+* Use package in generation
 * Groups (would be nice for accessing older protos)
 
 # Further Reading
