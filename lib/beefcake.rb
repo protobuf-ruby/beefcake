@@ -161,7 +161,7 @@ module Beefcake
             while tmp.length > 0
               o[fld.name] << tmp.read(fld.type)
             end
-	  elsif fld.rule == :repeated
+          elsif fld.rule == :repeated
             val = buf.read(fld.type)
             (o[fld.name] ||= []) << val
           else
@@ -172,7 +172,7 @@ module Beefcake
 
         # Set defaults
         fields.values.each do |f|
-	  next if o[f.name] == false
+          next if o[f.name] == false
           o[f.name] ||= f.opts[:default]
         end
 
