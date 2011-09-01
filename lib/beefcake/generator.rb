@@ -247,7 +247,7 @@ module Beefcake
       puts out
     end
 
-    # Determines the name for a 
+    # Determines the name for a
     def name_for(b, mod, val)
       b.name_for(mod, val).to_s.gsub(/.*_/, "").downcase
     end
