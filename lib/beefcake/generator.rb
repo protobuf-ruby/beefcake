@@ -241,7 +241,16 @@ module Beefcake
       out = "%s %s, %s, %d" % [label, name, type, f.number]
 
       if f.default_value
-        out += ", :default => #{f.default_value}"
+        v = case f.type
+        when T::TYPE_ENUM
+          "%s::%s" % [type, f.default_value]
+        when T::TYPE_STRING, T::TYPE_BYTES
+          '"%s"' % [f.default_value.gsub('"', '\"')]
+        else
+          f.default_value
+        end
+
+        out += ", :default => #{v}"
       end
 
       puts out
