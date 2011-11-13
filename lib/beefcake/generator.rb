@@ -229,7 +229,9 @@ module Beefcake
         # We have a type_name so we will use it after converting to a
         # Ruby friendly version
         t = f.type_name
-        t = t.gsub(pkg, "") # Remove the leading package name
+        if pkg
+          t = t.gsub(pkg, "") # Remove the leading package name
+        end
         t = t.gsub(/^\.*/, "")       # Remove leading `.`s
 
         t.gsub(".", "::")  # Convert to Ruby namespacing syntax
