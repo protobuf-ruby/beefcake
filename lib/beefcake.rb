@@ -235,7 +235,17 @@ module Beefcake
     def to_hash
       fields.values.inject({}) do |h, fld|
         if v = self[fld.name]
-          h[fld.name] = v
+          h[fld.name] =
+              case
+                # A nested protobuf message, so let's call its 'to_hash' method.
+                when v.respond_to?(:to_hash) ; v.to_hash
+                when v.is_a?(Array)
+                  # There can be two field types stored in array.
+                  # Primitive type or nested another protobuf message.
+                  # The later one has got a 'to_hash' method.
+                  h[fld.name] = v.map { |i| i.respond_to?(:to_hash) ? i.to_hash : i }
+                else ; v
+              end
         end
         h
       end

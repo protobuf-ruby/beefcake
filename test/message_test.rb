@@ -373,6 +373,22 @@ class MessageTest < Test::Unit::TestCase
     msg =  SimpleMessage.new :a => 1
     exp = { :a => 1 }
     assert_equal(exp, msg.to_hash)
+
+    msg = RepeatedNestedMessage.new(
+      :simple => [
+        SimpleMessage.new(:a => 1),
+        SimpleMessage.new(:b => 'abc dfg'),
+        SimpleMessage.new(:a => 2, :b => 'ijk lmn')
+      ]
+    )
+    exp = {
+      :simple =>[
+        {:a => 1},
+        {:b => 'abc dfg'},
+        {:a => 2, :b => 'ijk lmn'}
+      ]
+    }
+    assert_equal(exp, msg.to_hash)
   end
 
 end
