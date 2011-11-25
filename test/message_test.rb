@@ -95,6 +95,70 @@ class LargeFieldNumberMessage
   required :field_2, :string, 100
 end
 
+class FieldTest < Test::Unit::TestCase
+  FIELD = Beefcake::Message::Field
+
+  def test_required?
+    f = FIELD.new :required, :field1, :string, 1
+    assert_true  f.required?
+    assert_false f.optional?
+    assert_false f.repeated?
+
+    f = FIELD.new :optional, :field1, :int32, 1
+    assert_false f.required?
+
+    f = FIELD.new :repeated, :field1, :int32, 1
+    assert_false f.required?
+  end
+
+  def test_optional?
+    f = FIELD.new :optional, :field1, :string, 1
+    assert_true  f.optional?
+    assert_false f.required?
+    assert_false f.repeated?
+
+    f = FIELD.new :required, :field1, :int32, 1
+    assert_false f.optional?
+
+    f = FIELD.new :repeated, :field1, :int32, 1
+    assert_false f.optional?
+  end
+
+  def test_repeated?
+    f = FIELD.new :repeated, :field1, :string, 1
+    assert_true  f.repeated?
+    assert_false f.required?
+    assert_false f.optional?
+
+    f = FIELD.new :optional, :field1, :int32, 1
+    assert_false f.repeated?
+
+    f = FIELD.new :required, :field1, :int32, 1
+    assert_false f.optional?
+  end
+
+  def test_same_type
+    f = FIELD.new(:required, :field1, :int32, 1)
+    assert_true  f.same_type?(:int32)
+    assert_false f.same_type?(:int64)
+    assert_false f.same_type?(SimpleMessage)
+
+    f = FIELD.new(:required, :field1, SimpleMessage, 1)
+    assert_true  f.same_type?(SimpleMessage)
+    assert_false f.same_type?(:int32)
+    assert_false f.same_type?(:string)
+    assert_false f.same_type?(NumericsMessage)
+  end
+
+  def test_is_protobuf?
+    f = FIELD.new(:required, :field1, SimpleMessage, 1)
+    assert_true f.is_protobuf?
+
+    f = FIELD.new(:required, :field1, :string, 1)
+    assert_false f.is_protobuf?
+  end
+end
+
 class MessageTest < Test::Unit::TestCase
   B = Beefcake::Buffer
 
@@ -156,6 +220,12 @@ class MessageTest < Test::Unit::TestCase
     )
 
     assert_equal buf2.to_s, msg.encode.to_s
+
+    msg = CompositeMessage.new(
+        :encodable => {:a => 123}
+    )
+    assert_equal buf2.to_s, msg.encode.to_s
+
   end
 
   def test_encode_to_string

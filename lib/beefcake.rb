@@ -28,6 +28,18 @@ module Beefcake
       def <=>(o)
         fn <=> o.fn
       end
+
+      def same_type?(obj)
+        type == obj
+      end
+
+      def is_protobuf?
+        type.is_a?(Class) and type.include?(Beefcake::Message)
+      end
+
+      def required? ; rule == :required end
+      def repeated? ; rule == :repeated end
+      def optional? ; rule == :optional end
     end
 
 
@@ -189,10 +201,46 @@ module Beefcake
       o.send(:include, Encode)
     end
 
+    # (see #assign)
     def initialize(attrs={})
+      assign attrs
+    end
+
+    # Handles filling a protobuf message from a hash. Embedded messages can
+    # be passed in two ways, by a pure hash or as an instance of embedded class(es).
+    #
+    # @example By a pure hash.
+    #   {:field1 => 2, :embedded => {:embedded_f1 => 'lala'}}
+    #
+    # @example Repeated embedded message by a pure hash.
+    #   {:field1 => 2, :embedded => [
+    #     {:embedded_f1 => 'lala'},
+    #     {:embedded_f1 => 'lulu'}
+    #   ]}
+    #
+    # @example As an instance of embedded class.
+    #   {:field1 => 2, :embedded => EmbeddedMsg.new({:embedded_f1 => 'lala'})}
+    #
+    # @param [Hash] data to fill a protobuf message with.
+    def assign(attrs)
       fields.values.each do |fld|
-        self[fld.name] = attrs[fld.name]
+        if attrs[fld.name].nil?
+          self[fld.name] = nil
+          next
+        end
+
+        self[fld.name] = fld.is_protobuf? ?
+          if not fld.repeated?
+            fld.same_type?(attrs[fld.name]) ?
+              attrs[fld.name] : fld.type.new.assign(attrs[fld.name])
+          else
+            attrs[fld.name].map do |i|
+              fld.same_type?(i) ? i : fld.type.new.assign(i)
+            end
+          end
+        : attrs[fld.name]
       end
+      self
     end
 
     def fields

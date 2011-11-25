@@ -111,7 +111,7 @@ Currently Beefcake is tested and working on:
 * 32-bit fields
 * 64-bit fields
 * Length delemited fields
-* Embeded Messages
+* Embedded Messages
 * Unknown fields are ignored (as per spec)
 * Enums
 * Defaults (i.e. `optional :foo, :string, :default => "bar"`)
