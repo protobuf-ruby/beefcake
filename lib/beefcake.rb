@@ -232,10 +232,10 @@ module Beefcake
         self[fld.name] = fld.is_protobuf? ?
           if not fld.repeated?
             fld.same_type?(attrs[fld.name]) ?
-              attrs[fld.name] : fld.type.new.assign(attrs[fld.name])
+              attrs[fld.name] : fld.type.new(attrs[fld.name])
           else
             attrs[fld.name].map do |i|
-              fld.same_type?(i) ? i : fld.type.new.assign(i)
+              fld.same_type?(i) ? i : fld.type.new(i)
             end
           end
         : attrs[fld.name]

@@ -241,6 +241,9 @@ class MessageTest < Test::Unit::TestCase
 
     msg = EnumsMessage.new :a => EnumsMessage::X::A
     assert_equal "\b\001", msg.encode.to_s
+
+    msg = EnumsMessage.new :a => 1
+    assert_equal "\b\001", msg.encode.to_s
   end
 
   def test_encode_invalid_enum_value
@@ -401,6 +404,16 @@ class MessageTest < Test::Unit::TestCase
     assert_equal 2, got.simple.size
     assert_equal 1, got.simple[0].a
     assert_equal "hello", got.simple[1].b
+
+    simple_pure = [
+      {:a => 1},
+      {:b => "hello"}
+    ]
+    msg = RepeatedNestedMessage.new(:simple => simple_pure).encode
+    got = RepeatedNestedMessage.decode(msg)
+    assert_equal 2, got.simple.size
+    assert_equal 1, got.simple[0].a
+    assert_equal "hello", got.simple[1].b
   end
 
   def test_equality
@@ -442,7 +455,7 @@ class MessageTest < Test::Unit::TestCase
   def test_to_hash
     msg =  SimpleMessage.new :a => 1
     exp = { :a => 1 }
-    assert_equal(exp, msg.to_hash)
+    assert_equal exp, msg.to_hash
 
     msg = RepeatedNestedMessage.new(
       :simple => [
@@ -458,7 +471,7 @@ class MessageTest < Test::Unit::TestCase
         {:a => 2, :b => 'ijk lmn'}
       ]
     }
-    assert_equal(exp, msg.to_hash)
+    assert_equal exp, msg.to_hash
   end
 
 end
