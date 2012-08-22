@@ -162,17 +162,6 @@ module Beefcake
       @n = 0
     end
 
-    def file!(file)
-      puts "## Generated from #{file.name} for #{file.package}"
-
-      file.message_type.each do |mt|
-        define! mt
-      end
-      file.message_type.each do |mt|
-        message!("", mt)
-      end
-    end
-
     def indent(&blk)
       @n += 1
       blk.call
