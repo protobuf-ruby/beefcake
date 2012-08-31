@@ -375,4 +375,14 @@ class MessageTest < Test::Unit::TestCase
     assert_equal(exp, msg.to_hash)
   end
 
+  def test_duplicate_index
+    assert_raises Beefcake::Message::DuplicateFieldNumber do
+      Class.new do
+        include Beefcake::Message
+
+        required :clever_name, :int32, 1
+        required :naughty_field, :string, 1
+      end
+    end
+  end
 end

@@ -23,6 +23,11 @@ module Beefcake
       end
     end
 
+    class DuplicateFieldNumber < StandardError
+      def initialize(num, name)
+        super("Field number #{num} (#{name}) was already used")
+      end
+    end
 
     class Field < Struct.new(:rule, :name, :type, :fn, :opts)
       def <=>(o)
@@ -45,6 +50,9 @@ module Beefcake
       end
 
       def field(rule, name, type, fn, opts)
+        if fields.include?(fn)
+          raise DuplicateFieldNumber.new(fn, name)
+        end
         fields[fn] = Field.new(rule, name, type, fn, opts)
         attr_accessor name
       end
