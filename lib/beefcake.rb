@@ -259,8 +259,9 @@ module Beefcake
 
     def to_hash
       fields.values.inject({}) do |h, fld|
-        if v = self[fld.name]
-          h[fld.name] = v
+        value = self[fld.name]
+        unless value.nil?
+          h[fld.name] = value
         end
         h
       end
