@@ -165,6 +165,9 @@ module Beefcake
       puts "## Generated from #{file.name} for #{file.package}"
 
       file.message_type.each do |mt|
+        define! mt
+      end
+      file.message_type.each do |mt|
         message!("", mt)
       end
     end
@@ -179,14 +182,22 @@ module Beefcake
       @n = n
     end
 
+    def define!(mt)
+      puts
+      puts "class #{mt.name}"
+      
+      indent do
+        puts "include Beefcake::Message"
+      end
+      puts "end"
+      puts
+    end
+
     def message!(pkg, mt)
       puts
       puts "class #{mt.name}"
 
       indent do
-        puts "include Beefcake::Message"
-        puts
-
         Array(mt.enum_type).each do |et|
           enum!(et)
         end
@@ -269,6 +280,10 @@ module Beefcake
       puts
 
       ns!(ns) do
+
+        file.message_type.each do |mt|
+          define! mt
+        end
         file.message_type.each do |mt|
           message!(file.package, mt)
         end
