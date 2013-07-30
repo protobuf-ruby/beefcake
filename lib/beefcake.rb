@@ -106,6 +106,20 @@ module Beefcake
         buf
       end
 
+      def write_delimited(buf = Buffer.new)
+        if ! buf.respond_to?(:<<)
+          raise ArgumentError, "buf doesn't respond to `<<`"
+        end
+
+        if ! buf.is_a?(Buffer)
+          buf = Buffer.new(buf)
+        end
+
+        buf.append_bytes(encode)
+
+        buf
+      end
+
       def valid_enum?(mod, val)
         !!name_for(mod, val)
       end
@@ -175,6 +189,20 @@ module Beefcake
           next if o[f.name] == false
           o[f.name] ||= f.opts[:default]
         end
+
+        o.validate!
+
+        o
+      end
+
+      def read_delimited(buf, o=self.new)
+        if ! buf.is_a?(Buffer)
+          buf = Buffer.new(buf)
+        end
+
+        n = buf.read_int64
+        tmp = Buffer.new(buf.read(n))
+        self.decode(tmp, o)
 
         o.validate!
 
