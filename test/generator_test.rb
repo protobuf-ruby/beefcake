@@ -1,3 +1,4 @@
+require 'test/unit'
 require 'beefcake/generator'
 
 class GeneratorTest < Test::Unit::TestCase

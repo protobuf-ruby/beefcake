@@ -1,3 +1,4 @@
+require 'test/unit'
 require 'beefcake'
 
 class NumericsMessage

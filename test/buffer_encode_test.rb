@@ -1,3 +1,4 @@
+require 'test/unit'
 require 'beefcake/buffer/encode'
 
 class BufferEncodeTest < Test::Unit::TestCase
