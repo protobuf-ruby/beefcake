@@ -85,10 +85,13 @@ Source:
     $ git clone git://github.com/bmizerany/beefcake
 
 ## Testing:
+    $ rake test
 
-    $ gem install turn
-    $ cd /path/to/beefcake
-    $ turn
+Beefcake conducts continuous integration on [Travis CI](http://travis-ci.org).
+The current build status for HEAD is [![Build Status](https://travis-ci.org/protobuf-ruby/beefcake.png)](https://travis-ci.org/protobuf-ruby/beefcake).
+
+All pull requests automatically trigger a build request.  Please ensure that
+tests succeed.
 
 ## VMs:
 
