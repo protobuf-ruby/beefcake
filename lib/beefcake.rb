@@ -202,11 +202,8 @@ module Beefcake
 
         n = buf.read_int64
         tmp = Buffer.new(buf.read(n))
-        self.decode(tmp, o)
 
-        o.validate!
-
-        o
+        decode(tmp, o)
       end
     end
 
