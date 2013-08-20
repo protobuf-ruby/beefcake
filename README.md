@@ -113,11 +113,12 @@ Currently Beefcake is tested and working on:
 * Varint fields
 * 32-bit fields
 * 64-bit fields
-* Length delemited fields
-* Embeded Messages
+* Length-delimited fields
+* Embedded Messages
 * Unknown fields are ignored (as per spec)
 * Enums
 * Defaults (i.e. `optional :foo, :string, :default => "bar"`)
+* Varint-encoded length-delimited message streams
 
 
 ## Future

@@ -166,6 +166,20 @@ class MessageTest < Test::Unit::TestCase
     assert_equal "\b{", str
   end
 
+  def test_delimited_end_to_end
+    msg = SimpleMessage.new :a => 123, :b => "hi mom!"
+    str = ""
+
+    1000.times do
+      msg.write_delimited(str)
+    end
+
+    1000.times do
+      dec = SimpleMessage.read_delimited(str)
+      assert_equal msg, dec
+    end
+  end
+
   def test_encode_enum
     buf = Beefcake::Buffer.new
     buf.append(:int32, 2, 1)
