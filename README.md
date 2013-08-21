@@ -82,7 +82,7 @@ desired namespace. (i.e. App::Foo::Bar)
 
 Source:
 
-    $ git clone https://github.com/bmizerany/beefcake.git
+    $ git clone https://github.com/protobuf-ruby/beefcake.git
 
 ## Testing:
 
