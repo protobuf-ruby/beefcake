@@ -82,9 +82,10 @@ desired namespace. (i.e. App::Foo::Bar)
 
 Source:
 
-    $ git clone git://github.com/bmizerany/beefcake
+    $ git clone https://github.com/protobuf-ruby/beefcake.git
 
 ## Testing:
+
     $ rake test
 
 Beefcake conducts continuous integration on [Travis CI](http://travis-ci.org).
@@ -100,6 +101,7 @@ Currently Beefcake is tested and working on:
 * Ruby 1.8.6
 * Ruby 1.8.7
 * Ruby 1.9.2
+* Ruby 2.0.0
 * JRuby 1.5.6
 * Rubinius edge
 

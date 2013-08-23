@@ -77,6 +77,7 @@ module Beefcake
     end
 
     def <<(bytes)
+      bytes = bytes.force_encoding('BINARY') if bytes.respond_to? :force_encoding
       buf << bytes
     end
 

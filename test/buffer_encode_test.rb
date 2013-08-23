@@ -1,3 +1,4 @@
+# encoding: ASCII-8BIT
 require 'test/unit'
 require 'beefcake/buffer/encode'
 
