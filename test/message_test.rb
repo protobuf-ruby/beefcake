@@ -390,4 +390,14 @@ class MessageTest < Test::Unit::TestCase
     assert_equal(exp, msg.to_hash)
   end
 
+  def test_bool_to_hash
+    true_message = BoolMessage.new :bool => true
+    true_expectation = { :bool => true }
+    assert_equal true_expectation, true_message.to_hash
+
+    false_message = BoolMessage.new :bool => false
+    false_expectation = { :bool => false }
+    assert_equal false_expectation, false_message.to_hash
+  end
+
 end
