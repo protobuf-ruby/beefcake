@@ -178,9 +178,18 @@ module Beefcake
 
       indent do
         puts "include Beefcake::Message"
+
+        ## Enum Types
+        Array(mt.enum_type).each do |et|
+          enum!(et)
+        end
+
+        ## Nested Types
+        Array(mt.nested_type).each do |nt|
+          define!(nt)
+        end
       end
       puts "end"
-      puts
     end
 
     def message!(pkg, mt)
@@ -188,28 +197,23 @@ module Beefcake
       puts "class #{mt.name}"
 
       indent do
-        ## Enum Types
-        Array(mt.enum_type).each do |et|
-          enum!(et)
-        end
-
         ## Generate Types
         Array(mt.nested_type).each do |nt|
           message!(pkg, nt)
         end
-        puts
 
         ## Generate Fields
         Array(mt.field).each do |f|
           field!(pkg, f)
         end
-        puts
       end
 
       puts "end"
+      puts
     end
 
     def enum!(et)
+      puts
       puts "module #{et.name}"
       indent do
         et.value.each do |v|
