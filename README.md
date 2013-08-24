@@ -57,7 +57,7 @@ Any object responding to `<<` can accept encoding
 
 ```ruby
 x # => <Variety x: 1, y: 2>
-    
+
 # For example, you can encode into a String:
 s = ""
 x.encode(s)

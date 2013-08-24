@@ -175,7 +175,7 @@ module Beefcake
     def define!(mt)
       puts
       puts "class #{mt.name}"
-      
+
       indent do
         puts "include Beefcake::Message"
       end
@@ -188,6 +188,7 @@ module Beefcake
       puts "class #{mt.name}"
 
       indent do
+        ## Enum Types
         Array(mt.enum_type).each do |et|
           enum!(et)
         end
@@ -198,7 +199,7 @@ module Beefcake
         end
         puts
 
-        ## Generate fields
+        ## Generate Fields
         Array(mt.field).each do |f|
           field!(pkg, f)
         end
