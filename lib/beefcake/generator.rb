@@ -209,7 +209,6 @@ module Beefcake
       end
 
       puts "end"
-      puts
     end
 
     def enum!(et)
