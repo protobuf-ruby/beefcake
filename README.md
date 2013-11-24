@@ -1,13 +1,15 @@
-# Beefcake (A sane Google Protocol Buffers library for Ruby)
-## It's all about being Buf; ProtoBuf.
+# Beefcake
 
-# Install
+A sane Google Protocol Buffers library for Ruby. It's all about being Buf;
+ProtoBuf.
+
+## Installation
 
 ```shell
-$ gem install beefcake
+gem install beefcake
 ```
 
-# Example
+## Usage
 
 ```ruby
 require 'beefcake'
@@ -38,7 +40,7 @@ class Variety
 end
 
 # You can create a new message with hash arguments:
-x = Variety.new :x => 1, :y => 2
+x = Variety.new(:x => 1, :y => 2)
 
 # You can set fields individually using accessor methods:
 x = Variety.new
@@ -51,12 +53,13 @@ x[:y] = 4
 x # => <Variety x: 1, y: 4>
 ```
 
-## Encoding
+### Encoding
 
 Any object responding to `<<` can accept encoding
 
 ```ruby
-x # => <Variety x: 1, y: 2>
+# see code example above for the definition of Variety
+x = Variety.new(:x => 1, :y => 2)
 
 # For example, you can encode into a String:
 s = ""
@@ -73,7 +76,8 @@ x.encode.to_s # => "\b\x01\x10\x02)\0"
 ### Decoding
 
 ```ruby
-x # => <Variety x: 1, y: 2>
+# see code example above for the definition of Variety
+x = Variety.new(:x => 1, :y => 2)
 
 # You can decode from a Beefcake::Buffer
 encoded = x.encode
@@ -88,31 +92,53 @@ Variety.decoded(new_data, x)
 x # => <Variety x: 12345, y: 2, pary: [], foo: B(2)>
 ```
 
-# Why?
+### Generate code from `.proto` file
 
-  Ruby deserves and needs first-class ProtoBuf support.
-  Other libs didn't feel very "Ruby" to me and were hard to parse.
+```shell
+protoc --beefcake_out output/path -I path/to/proto/files/dir path/to/file.proto
+```
 
-# Generate code from `.proto` file
-
-    $ protoc --beefcake_out output/path -I path/to/proto/files/dir path/to/proto/file
-
-You can set the BEEFCAKE_NAMESPACE variable to generate the classes under a
+You can set the `BEEFCAKE_NAMESPACE` variable to generate the classes under a
 desired namespace. (i.e. App::Foo::Bar)
 
-# Misc
+## About
 
-  This library was built with EventMachine in mind.  Not just blocking-IO.
+Ruby deserves and needs first-class ProtoBuf support. Other libs didn't feel
+very "Ruby" to me and were hard to parse.
 
-# Dev
+This library was built with EventMachine in mind.  Not just blocking-IO.
 
-Source:
+Source: https://github.com/protobuf-ruby/beefcake
 
-    $ git clone https://github.com/protobuf-ruby/beefcake.git
+### Support Features
 
-## Testing:
+  * Optional fields
+  * Required fields
+  * Repeated fields
+  * Packed Repeated Fields
+  * Varint fields
+  * 32-bit fields
+  * 64-bit fields
+  * Length-delimited fields
+  * Embedded Messages
+  * Unknown fields are ignored (as per spec)
+  * Enums
+  * Defaults (i.e. `optional :foo, :string, :default => "bar"`)
+  * Varint-encoded length-delimited message streams
 
-    $ rake test
+### Future
+
+  * Imports
+  * Use package in generation
+  * Groups (would be nice for accessing older protos)
+
+### Further Reading
+
+http://code.google.com/apis/protocolbuffers/docs/encoding.html
+
+## Testing
+
+    rake test
 
 Beefcake conducts continuous integration on [Travis CI](http://travis-ci.org).
 The current build status for HEAD is [![Build Status](https://travis-ci.org/protobuf-ruby/beefcake.png)](https://travis-ci.org/protobuf-ruby/beefcake).
@@ -120,46 +146,16 @@ The current build status for HEAD is [![Build Status](https://travis-ci.org/prot
 All pull requests automatically trigger a build request.  Please ensure that
 tests succeed.
 
-## VMs:
-
 Currently Beefcake is tested and working on:
 
-* Ruby 1.8.6
-* Ruby 1.8.7
-* Ruby 1.9.2
-* Ruby 2.0.0
-* JRuby 1.5.6
-* Rubinius edge
+  * Ruby 1.8.6
+  * Ruby 1.8.7
+  * Ruby 1.9.2
+  * Ruby 2.0.0
+  * JRuby 1.5.6
+  * Rubinius edge
 
+## Thank You
 
-## Support Features
-
-* Optional fields
-* Required fields
-* Repeated fields
-* Packed Repeated Fields
-* Varint fields
-* 32-bit fields
-* 64-bit fields
-* Length-delimited fields
-* Embedded Messages
-* Unknown fields are ignored (as per spec)
-* Enums
-* Defaults (i.e. `optional :foo, :string, :default => "bar"`)
-* Varint-encoded length-delimited message streams
-
-
-## Future
-
-* Imports
-* Use package in generation
-* Groups (would be nice for accessing older protos)
-
-# Further Reading
-
-http://code.google.com/apis/protocolbuffers/docs/encoding.html
-
-# Thank You
-
-Keith Rarick (kr) for help with encoding/decoding.
-Aman Gupta (tmm1) for help with cross VM support and performance enhancements.
+  * Keith Rarick (kr) for help with encoding/decoding.
+  * Aman Gupta (tmm1) for help with cross VM support and performance enhancements.
