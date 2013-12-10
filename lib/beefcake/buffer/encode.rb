@@ -105,7 +105,7 @@ module Beefcake
     end
 
     def append_string(s)
-      actual_string = s.to_s
+      actual_string = s.dup.to_s
       if actual_string.respond_to? :force_encoding
         encoded = actual_string.force_encoding 'binary'
       else
