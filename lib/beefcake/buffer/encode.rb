@@ -105,7 +105,7 @@ module Beefcake
     end
 
     def append_string(s)
-      actual_string = s.dup.to_s
+      actual_string = thaw_string s
       if actual_string.respond_to? :force_encoding
         encoded = actual_string.force_encoding 'binary'
       else
@@ -116,6 +116,14 @@ module Beefcake
     end
     alias :append_bytes :append_string
 
+
+    private
+    def thaw_string(s)
+      if s.frozen?
+        s = s.dup
+      end
+      s.to_s
+    end
   end
 
 end
