@@ -200,6 +200,8 @@ module Beefcake
           buf = Buffer.new(buf)
         end
 
+        return if buf.length == 0
+
         n = buf.read_int64
         tmp = Buffer.new(buf.read(n))
 

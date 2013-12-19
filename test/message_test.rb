@@ -180,6 +180,10 @@ class MessageTest < Test::Unit::TestCase
     end
   end
 
+  def test_empty_buffer_delimited_read
+    assert_equal SimpleMessage.read_delimited(""), nil
+  end
+
   def test_encode_enum
     buf = Beefcake::Buffer.new
     buf.append(:int32, 2, 1)
