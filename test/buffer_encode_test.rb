@@ -221,4 +221,9 @@ class BufferEncodeTest < Test::Unit::TestCase
     assert_equal "\007testing", @buf.to_s
   end
 
+  def test_append_frozen_string
+    @buf.append_string "testing".freeze
+    assert_equal "\007testing", @buf.to_s
+  end
+
 end
