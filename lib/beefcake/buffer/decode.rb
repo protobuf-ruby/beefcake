@@ -43,7 +43,7 @@ module Beefcake
         if shift >= 64
           raise BufferOverflowError, "varint"
         end
-        b = buf.slice!(0)
+        b = read(1)
 
         ## 1.8.6 to 1.9 Compat
         if b.respond_to?(:ord)
