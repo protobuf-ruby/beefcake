@@ -216,6 +216,18 @@ class BufferEncodeTest < Test::Unit::TestCase
     assert_equal "\007testing", @buf.to_s
   end
 
+  if ''.respond_to? :force_encoding
+    def test_append_unicode_string
+      ingest = "\u{1f63a}" * 5
+      assert_equal 5, ingest.chars.length
+      expected = ingest.bytes.length.chr + ingest
+      @buf.append_string(ingest)
+      actual = @buf.to_s
+      assert_equal expected.bytes.length, actual.bytes.length
+      assert_equal expected.bytes, actual.bytes
+    end
+  end
+
   def test_append_bytes
     @buf.append_bytes("testing")
     assert_equal "\007testing", @buf.to_s
