@@ -100,7 +100,7 @@ module Beefcake
       else
         read_slice = buf.slice(@cursor, n)
         @cursor += n
-        return read_slice.dup
+        return read_slice
       end
     end
 
