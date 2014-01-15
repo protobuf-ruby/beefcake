@@ -64,7 +64,6 @@ module Beefcake
 
     def initialize(buf="")
       self.buf = buf
-      @cursor = 0
     end
 
     if ''.respond_to?(:force_encoding)
@@ -79,6 +78,8 @@ module Beefcake
       end
     end
 
+    if ''.respond_to?(:bytesize)
+    end
     def length
       remain = buf.slice(@cursor..-1)
       remain.respond_to?(:bytesize) ? remain.bytesize : remain.length
