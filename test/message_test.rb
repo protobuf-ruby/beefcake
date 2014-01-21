@@ -259,7 +259,7 @@ class MessageTest < Test::Unit::TestCase
   end
 
   def test_encode_unknown_field
-    msg = SimpleMessage.new mystery_field: 'asdf'
+    msg = SimpleMessage.new :mystery_field => 'asdf'
     assert_nothing_raised do
       msg.encode.to_s
     end
