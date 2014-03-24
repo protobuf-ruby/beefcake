@@ -78,8 +78,6 @@ module Beefcake
       end
     end
 
-    if ''.respond_to?(:bytesize)
-    end
     def length
       remain = buf.slice(@cursor..-1)
       remain.respond_to?(:bytesize) ? remain.bytesize : remain.length
