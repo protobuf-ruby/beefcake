@@ -39,7 +39,7 @@ class GeneratorTest < Minitest::Test
   # Encoding::CompatibilityError: incompatible character encodings: ASCII-8BIT and US-ASCII
   def test_encode_decode_generated_response
     @res = Beefcake::Generator.compile([], @req)
-    assert_nothing_raised { @res.encode }
+    @res.encode
   end
 
   def test_encode_decode_generated_response
