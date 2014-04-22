@@ -260,9 +260,7 @@ class MessageTest < Minitest::Test
 
   def test_encode_unknown_field
     msg = SimpleMessage.new :mystery_field => 'asdf'
-    assert_nothing_raised do
-      msg.encode.to_s
-    end
+    msg.encode.to_s
   end
 
   ## Decoding
