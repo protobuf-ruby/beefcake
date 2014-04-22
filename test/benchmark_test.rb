@@ -20,7 +20,7 @@ class BenchmarkTest < Minitest::Benchmark
   end
 
   def bench_read_string
-    assert_performance_linear 0.99 do |n|
+    assert_performance_linear 0.75 do |n|
       candidate = 'x' * (n * 1_000)
       @buf.append_string candidate
       assert_equal candidate, @buf.read_string
@@ -28,7 +28,7 @@ class BenchmarkTest < Minitest::Benchmark
   end
 
   def bench_decode
-    assert_performance_linear 0.99 do |n|
+    assert_performance_linear 0.75 do |n|
       inners = n.times.map{ Inner.new :content => 'x' * 100 }
       outer = Outer.new :inner => inners
 
