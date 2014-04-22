@@ -12,22 +12,33 @@ module Beefcake
     MinInt64  = -(1 << 63)
     MaxInt64  =  (1 << 63)-1
 
+    WIRES = {
+      :int32    => 0,
+      :uint32   => 0,
+      :sint32   => 0,
+      :int64    => 0,
+      :uint64   => 0,
+      :sint64   => 0,
+      :bool     => 0,
+      :fixed64  => 1,
+      :sfixed64 => 1,
+      :double   => 1,
+      :string   => 2,
+      :bytes    => 2,
+      :fixed32  => 5,
+      :sfixed32 => 5,
+      :float    => 5,
+    }
+
     def self.wire_for(type)
-      case type
-      when Class
-        if encodable?(type)
-          2
-        else
-          raise UnknownType, type
-        end
-      when :int32, :uint32, :sint32, :int64, :uint64, :sint64, :bool, Module
-        0
-      when :fixed64, :sfixed64, :double
-        1
-      when :string, :bytes
+      wire = WIRES[type]
+
+      if wire
+        wire
+      elsif Class === type && encodable?(type)
         2
-      when :fixed32, :sfixed32, :float
-        5
+      elsif Module === type
+        0
       else
         raise UnknownType, type
       end

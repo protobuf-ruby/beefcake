@@ -211,11 +211,6 @@ class BufferEncodeTest < Test::Unit::TestCase
     assert_equal "\376\377\377\377\377\377\377\377", @buf.to_s
   end
 
-  def test_append_string
-    @buf.append_string("testing")
-    assert_equal "\007testing", @buf.to_s
-  end
-
   if ''.respond_to? :force_encoding
     def test_append_unicode_string
       ingest = "\u{1f63a}" * 5
