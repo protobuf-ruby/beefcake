@@ -1,4 +1,4 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'beefcake'
 
 class NumericsMessage
@@ -96,7 +96,7 @@ class LargeFieldNumberMessage
   required :field_2, :string, 100
 end
 
-class MessageTest < Test::Unit::TestCase
+class MessageTest < Minitest::Test
   B = Beefcake::Buffer
 
   ## Encoding
@@ -357,7 +357,7 @@ class MessageTest < Test::Unit::TestCase
     b = SimpleMessage.new :a => 1
     assert_equal a, b
     c = SimpleMessage.new :a => 2
-    assert_not_equal b, c
+    refute_equal b, c
   end
 
   def test_inspect
