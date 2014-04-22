@@ -258,6 +258,13 @@ class MessageTest < Minitest::Test
     assert_equal buf.to_s, msg.encode.to_s
   end
 
+  def test_encode_unknown_field
+    msg = SimpleMessage.new :mystery_field => 'asdf'
+    assert_nothing_raised do
+      msg.encode.to_s
+    end
+  end
+
   ## Decoding
   def test_decode_numerics
     msg = NumericsMessage.new({

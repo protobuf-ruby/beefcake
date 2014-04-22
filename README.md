@@ -141,7 +141,7 @@ http://code.google.com/apis/protocolbuffers/docs/encoding.html
     rake test
 
 Beefcake conducts continuous integration on [Travis CI](http://travis-ci.org).
-The current build status for HEAD is [![Build Status](https://travis-ci.org/protobuf-ruby/beefcake.png)](https://travis-ci.org/protobuf-ruby/beefcake).
+The current build status for HEAD is [![Build Status](https://travis-ci.org/protobuf-ruby/beefcake.png?branch=master)](https://travis-ci.org/protobuf-ruby/beefcake).
 
 All pull requests automatically trigger a build request.  Please ensure that
 tests succeed.
