@@ -3,14 +3,14 @@ module Beefcake
   class Buffer
 
     MinUint32 =  0
-    MaxUint32 =  (1<<32)-1
-    MinInt32  = -(1<<31)
-    MaxInt32  =  (1<<31)-1
+    MaxUint32 =  (1 << 32)-1
+    MinInt32  = -(1 << 31)
+    MaxInt32  =  (1 << 31)-1
 
     MinUint64 =  0
-    MaxUint64 =  (1<<64)-1
-    MinInt64  = -(1<<63)
-    MaxInt64  =  (1<<63)-1
+    MaxUint64 =  (1 << 64)-1
+    MinInt64  = -(1 << 63)
+    MaxInt64  =  (1 << 63)-1
 
     WIRES = {
       :int32    => 0,
@@ -50,7 +50,7 @@ module Beefcake
       pims.include?(:encode) || pims.include?("encode")
     end
 
-    attr_accessor :buf
+    attr_reader :buf
 
     alias :to_s   :buf
     alias :to_str :buf
@@ -78,13 +78,20 @@ module Beefcake
     end
 
     if ''.respond_to?(:force_encoding)
-      def buf=(buf)
-        @buf = buf.force_encoding('BINARY')
+      def buf=(new_buf)
+        @buf = new_buf.force_encoding('BINARY')
+        @cursor = 0
+      end
+    else
+      def buf=(new_buf)
+        @buf = new_buf
+        @cursor = 0
       end
     end
 
     def length
-      @buf.respond_to?(:bytesize) ? @buf.bytesize : @buf.length
+      remain = buf.slice(@cursor..-1)
+      remain.respond_to?(:bytesize) ? remain.bytesize : remain.length
     end
 
     def <<(bytes)
@@ -101,7 +108,9 @@ module Beefcake
       when Module
         read_uint64
       else
-        buf.slice!(0, n)
+        read_slice = buf.slice(@cursor, n)
+        @cursor += n
+        return read_slice
       end
     end
 
