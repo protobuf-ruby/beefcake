@@ -365,6 +365,13 @@ class MessageTest < Test::Unit::TestCase
     assert_equal a, b
     c = SimpleMessage.new :a => 2
     assert_not_equal b, c
+
+    d = EnumsMessage.new :a => 5
+    e = EnumsDefaultMessage.new :a => 5
+
+    assert_not_equal d, e
+    assert_not_equal d, :symbol
+    assert_not_equal :symbol, d
   end
 
   def test_inspect
