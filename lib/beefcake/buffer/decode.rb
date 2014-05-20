@@ -43,14 +43,7 @@ module Beefcake
         if shift >= 64
           raise BufferOverflowError, "varint"
         end
-        b = read(1)
-
-        ## 1.8.6 to 1.9 Compat
-        if b.respond_to?(:ord)
-          b = b.ord
-        elsif b.is_a? String
-          b = b[0]
-        end
+        b = read(1).ord
 
         n |= ((b & 0x7F) << shift)
         shift += 7
