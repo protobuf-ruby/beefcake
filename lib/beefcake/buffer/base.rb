@@ -77,16 +77,9 @@ module Beefcake
       self.buf = buf
     end
 
-    if ''.respond_to?(:force_encoding)
-      def buf=(new_buf)
-        @buf = new_buf.force_encoding('BINARY')
-        @cursor = 0
-      end
-    else
-      def buf=(new_buf)
-        @buf = new_buf
-        @cursor = 0
-      end
+    def buf=(new_buf)
+      @buf = new_buf.force_encoding('BINARY')
+      @cursor = 0
     end
 
     def length

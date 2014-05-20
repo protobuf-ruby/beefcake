@@ -106,11 +106,7 @@ module Beefcake
 
     def append_string(s)
       actual_string = thaw_string s
-      if actual_string.respond_to? :force_encoding
-        encoded = actual_string.force_encoding 'binary'
-      else
-        encoded = actual_string
-      end
+      encoded = actual_string.force_encoding 'binary'
       append_uint64(encoded.length)
       self << encoded
     end
