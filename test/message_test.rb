@@ -1,3 +1,4 @@
+require 'test/unit'
 require 'beefcake'
 
 class NumericsMessage
@@ -165,6 +166,24 @@ class MessageTest < Test::Unit::TestCase
     assert_equal "\b{", str
   end
 
+  def test_delimited_end_to_end
+    msg = SimpleMessage.new :a => 123, :b => "hi mom!"
+    str = ""
+
+    1000.times do
+      msg.write_delimited(str)
+    end
+
+    1000.times do
+      dec = SimpleMessage.read_delimited(str)
+      assert_equal msg, dec
+    end
+  end
+
+  def test_empty_buffer_delimited_read
+    assert_equal SimpleMessage.read_delimited(""), nil
+  end
+
   def test_encode_enum
     buf = Beefcake::Buffer.new
     buf.append(:int32, 2, 1)
@@ -237,6 +256,13 @@ class MessageTest < Test::Unit::TestCase
     msg.field_2 = "123"
 
     assert_equal buf.to_s, msg.encode.to_s
+  end
+
+  def test_encode_unknown_field
+    msg = SimpleMessage.new :mystery_field => 'asdf'
+    assert_nothing_raised do
+      msg.encode.to_s
+    end
   end
 
   ## Decoding
@@ -339,6 +365,13 @@ class MessageTest < Test::Unit::TestCase
     assert_equal a, b
     c = SimpleMessage.new :a => 2
     assert_not_equal b, c
+
+    d = EnumsMessage.new :a => 5
+    e = EnumsDefaultMessage.new :a => 5
+
+    assert_not_equal d, e
+    assert_not_equal d, :symbol
+    assert_not_equal :symbol, d
   end
 
   def test_inspect
@@ -384,5 +417,15 @@ class MessageTest < Test::Unit::TestCase
         required :naughty_field, :string, 1
       end
     end
+  end
+
+  def test_bool_to_hash
+    true_message = BoolMessage.new :bool => true
+    true_expectation = { :bool => true }
+    assert_equal true_expectation, true_message.to_hash
+
+    false_message = BoolMessage.new :bool => false
+    false_expectation = { :bool => false }
+    assert_equal false_expectation, false_message.to_hash
   end
 end

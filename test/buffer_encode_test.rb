@@ -1,3 +1,5 @@
+# encoding: ASCII-8BIT
+require 'test/unit'
 require 'beefcake/buffer/encode'
 
 class BufferEncodeTest < Test::Unit::TestCase
@@ -209,13 +211,25 @@ class BufferEncodeTest < Test::Unit::TestCase
     assert_equal "\376\377\377\377\377\377\377\377", @buf.to_s
   end
 
-  def test_append_string
-    @buf.append_string("testing")
-    assert_equal "\007testing", @buf.to_s
+  if ''.respond_to? :force_encoding
+    def test_append_unicode_string
+      ingest = "\u{1f63a}" * 5
+      assert_equal 5, ingest.chars.to_a.length
+      expected = ingest.bytes.to_a.length.chr + ingest
+      @buf.append_string(ingest)
+      actual = @buf.to_s
+      assert_equal expected.bytes.to_a.length, actual.bytes.to_a.length
+      assert_equal expected.bytes.to_a, actual.bytes.to_a
+    end
   end
 
   def test_append_bytes
     @buf.append_bytes("testing")
+    assert_equal "\007testing", @buf.to_s
+  end
+
+  def test_append_frozen_string
+    @buf.append_string "testing".freeze
     assert_equal "\007testing", @buf.to_s
   end
 

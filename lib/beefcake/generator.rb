@@ -109,7 +109,8 @@ class CodeGeneratorRequest
     optional :name, :string, 1       # file name, relative to root of source tree
     optional :package, :string, 2    # e.g. "foo", "foo.bar", etc.
 
-    repeated :message_type, DescriptorProto, 4;
+    repeated :message_type, DescriptorProto,     4;
+    repeated :enum_type,    EnumDescriptorProto, 5;
   end
 
 
@@ -161,14 +162,6 @@ module Beefcake
       @n = 0
     end
 
-    def file!(file)
-      puts "## Generated from #{file.name} for #{file.package}"
-
-      file.message_type.each do |mt|
-        message!("", mt)
-      end
-    end
-
     def indent(&blk)
       @n += 1
       blk.call
@@ -179,35 +172,47 @@ module Beefcake
       @n = n
     end
 
-    def message!(pkg, mt)
+    def define!(mt)
       puts
       puts "class #{mt.name}"
 
       indent do
         puts "include Beefcake::Message"
-        puts
 
+        ## Enum Types
         Array(mt.enum_type).each do |et|
           enum!(et)
         end
 
+        ## Nested Types
+        Array(mt.nested_type).each do |nt|
+          define!(nt)
+        end
+      end
+      puts "end"
+    end
+
+    def message!(pkg, mt)
+      puts
+      puts "class #{mt.name}"
+
+      indent do
         ## Generate Types
         Array(mt.nested_type).each do |nt|
           message!(pkg, nt)
         end
-        puts
 
-        ## Generate fields
+        ## Generate Fields
         Array(mt.field).each do |f|
           field!(pkg, f)
         end
-        puts
       end
 
       puts "end"
     end
 
     def enum!(et)
+      puts
       puts "module #{et.name}"
       indent do
         et.value.each do |v|
@@ -269,6 +274,14 @@ module Beefcake
       puts
 
       ns!(ns) do
+        Array(file.enum_type).each do |et|
+          enum!(et)
+        end
+
+        file.message_type.each do |mt|
+          define! mt
+        end
+
         file.message_type.each do |mt|
           message!(file.package, mt)
         end

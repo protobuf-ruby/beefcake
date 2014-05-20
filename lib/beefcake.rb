@@ -114,6 +114,20 @@ module Beefcake
         buf
       end
 
+      def write_delimited(buf = Buffer.new)
+        if ! buf.respond_to?(:<<)
+          raise ArgumentError, "buf doesn't respond to `<<`"
+        end
+
+        if ! buf.is_a?(Buffer)
+          buf = Buffer.new(buf)
+        end
+
+        buf.append_bytes(encode)
+
+        buf
+      end
+
       def valid_enum?(mod, val)
         !!name_for(mod, val)
       end
@@ -188,6 +202,19 @@ module Beefcake
 
         o
       end
+
+      def read_delimited(buf, o=self.new)
+        if ! buf.is_a?(Buffer)
+          buf = Buffer.new(buf)
+        end
+
+        return if buf.length == 0
+
+        n = buf.read_int64
+        tmp = Buffer.new(buf.read(n))
+
+        decode(tmp, o)
+      end
     end
 
 
@@ -217,6 +244,7 @@ module Beefcake
 
     def ==(o)
       return false if (o == nil) || (o == false)
+      return false unless o.is_a? self.class
       fields.values.all? {|fld| self[fld.name] == o[fld.name] }
     end
 
@@ -242,8 +270,9 @@ module Beefcake
 
     def to_hash
       fields.values.inject({}) do |h, fld|
-        if v = self[fld.name]
-          h[fld.name] = v
+        value = self[fld.name]
+        unless value.nil?
+          h[fld.name] = value
         end
         h
       end

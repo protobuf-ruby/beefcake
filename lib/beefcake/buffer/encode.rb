@@ -105,11 +105,25 @@ module Beefcake
     end
 
     def append_string(s)
-      append_uint64(s.length)
-      self << s
+      actual_string = thaw_string s
+      if actual_string.respond_to? :force_encoding
+        encoded = actual_string.force_encoding 'binary'
+      else
+        encoded = actual_string
+      end
+      append_uint64(encoded.length)
+      self << encoded
     end
     alias :append_bytes :append_string
 
+
+    private
+    def thaw_string(s)
+      if s.frozen?
+        s = s.dup
+      end
+      s.to_s
+    end
   end
 
 end

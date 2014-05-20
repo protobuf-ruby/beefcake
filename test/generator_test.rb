@@ -1,3 +1,4 @@
+require 'test/unit'
 require 'beefcake/generator'
 
 class GeneratorTest < Test::Unit::TestCase
@@ -39,10 +40,7 @@ class GeneratorTest < Test::Unit::TestCase
   def test_encode_decode_generated_response
     @res = Beefcake::Generator.compile([], @req)
     assert_nothing_raised { @res.encode }
-  end
 
-  def test_encode_decode_generated_response
-    @res = Beefcake::Generator.compile([], @req)
     assert_equal(CodeGeneratorResponse, @res.class)
 
     round_trip = CodeGeneratorResponse.decode(@res.encode)
