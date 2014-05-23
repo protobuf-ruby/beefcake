@@ -289,7 +289,7 @@ class MessageTest < Test::Unit::TestCase
 
     got = NumericsMessage.decode(msg.encode)
 
-    msg.fields.values.each do |fld|
+    msg.__beefcake_fields__.values.each do |fld|
       assert_equal msg[fld.name], got[fld.name], fld.name
     end
   end
@@ -427,7 +427,7 @@ class MessageTest < Test::Unit::TestCase
   def test_fields_named_fields
     contents = %w{fields named fields}
     msg = FieldsMessage.new fields: contents
-    assert_equal 1, msg._fields.length
+    assert_equal 1, msg.__beefcake_fields__.length
     assert_equal contents, msg.fields
 
     assert_equal msg, FieldsMessage.decode(msg.encode)
