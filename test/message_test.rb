@@ -408,6 +408,17 @@ class MessageTest < Test::Unit::TestCase
     assert_equal(exp, msg.to_hash)
   end
 
+  def test_duplicate_index
+    assert_raises Beefcake::Message::DuplicateFieldNumber do
+      Class.new do
+        include Beefcake::Message
+
+        required :clever_name, :int32, 1
+        required :naughty_field, :string, 1
+      end
+    end
+  end
+
   def test_bool_to_hash
     true_message = BoolMessage.new :bool => true
     true_expectation = { :bool => true }
@@ -417,5 +428,4 @@ class MessageTest < Test::Unit::TestCase
     false_expectation = { :bool => false }
     assert_equal false_expectation, false_message.to_hash
   end
-
 end
