@@ -1,7 +1,7 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'beefcake/generator'
 
-class GeneratorTest < Test::Unit::TestCase
+class GeneratorTest < Minitest::Test
 
   def setup
     # Load up the generator request for the addressbook.proto example
@@ -39,7 +39,6 @@ class GeneratorTest < Test::Unit::TestCase
   # Encoding::CompatibilityError: incompatible character encodings: ASCII-8BIT and US-ASCII
   def test_encode_decode_generated_response
     @res = Beefcake::Generator.compile([], @req)
-    assert_nothing_raised { @res.encode }
 
     assert_equal(CodeGeneratorResponse, @res.class)
 

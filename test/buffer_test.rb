@@ -1,7 +1,7 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'beefcake/buffer'
 
-class BufferTest < Test::Unit::TestCase
+class BufferTest < Minitest::Test
 
   def setup
     @buf = Beefcake::Buffer.new
