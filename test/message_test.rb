@@ -96,6 +96,12 @@ class LargeFieldNumberMessage
   required :field_2, :string, 100
 end
 
+class FieldsMessage
+  include Beefcake::Message
+
+  repeated :fields, :string, 1
+end
+
 class MessageTest < Test::Unit::TestCase
   B = Beefcake::Buffer
 
@@ -283,7 +289,7 @@ class MessageTest < Test::Unit::TestCase
 
     got = NumericsMessage.decode(msg.encode)
 
-    msg.fields.values.each do |fld|
+    msg.__beefcake_fields__.values.each do |fld|
       assert_equal msg[fld.name], got[fld.name], fld.name
     end
   end
@@ -427,5 +433,16 @@ class MessageTest < Test::Unit::TestCase
     false_message = BoolMessage.new :bool => false
     false_expectation = { :bool => false }
     assert_equal false_expectation, false_message.to_hash
+  end
+
+  def test_fields_named_fields
+    contents = %w{fields named fields}
+    msg = FieldsMessage.new fields: contents
+    assert_equal 1, msg.__beefcake_fields__.length
+    assert_equal contents, msg.fields
+
+    assert_equal msg, FieldsMessage.decode(msg.encode)
+
+    assert_equal "<FieldsMessage fields: [\"fields\", \"named\", \"fields\"]>", msg.inspect
   end
 end

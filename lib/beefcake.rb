@@ -77,7 +77,7 @@ module Beefcake
 
         # TODO: Error if any required fields at nil
 
-        fields.values.sort.each do |fld|
+        __beefcake_fields__.values.sort.each do |fld|
           if fld.opts[:packed]
             bytes = encode!(Buffer.new, fld, 0)
             buf.append_info(fld.fn, Buffer.wire_for(fld.type))
@@ -142,7 +142,7 @@ module Beefcake
       end
 
       def validate!
-        fields.values.each do |fld|
+        __beefcake_fields__.values.each do |fld|
           if fld.rule == :required && self[fld.name].nil?
             raise RequiredFieldNotSetError, fld.name
           end
@@ -225,12 +225,12 @@ module Beefcake
     end
 
     def initialize(attrs={})
-      fields.values.each do |fld|
+      __beefcake_fields__.values.each do |fld|
         self[fld.name] = attrs[fld.name]
       end
     end
 
-    def fields
+    def __beefcake_fields__
       self.class.fields
     end
 
@@ -245,11 +245,11 @@ module Beefcake
     def ==(o)
       return false if (o == nil) || (o == false)
       return false unless o.is_a? self.class
-      fields.values.all? {|fld| self[fld.name] == o[fld.name] }
+      __beefcake_fields__.values.all? {|fld| self[fld.name] == o[fld.name] }
     end
 
     def inspect
-      set = fields.values.select {|fld| self[fld.name] != nil }
+      set = __beefcake_fields__.values.select {|fld| self[fld.name] != nil }
 
       flds = set.map do |fld|
         val = self[fld.name]
@@ -269,7 +269,7 @@ module Beefcake
     end
 
     def to_hash
-      fields.values.inject({}) do |h, fld|
+      __beefcake_fields__.values.inject({}) do |h, fld|
         value = self[fld.name]
         unless value.nil?
           h[fld.name] = value
