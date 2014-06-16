@@ -96,6 +96,12 @@ class LargeFieldNumberMessage
   required :field_2, :string, 100
 end
 
+class FieldsMessage
+  include Beefcake::Message
+
+  repeated :fields, :string, 1
+end
+
 class MessageTest < Minitest::Test
   B = Beefcake::Buffer
 
@@ -281,7 +287,7 @@ class MessageTest < Minitest::Test
 
     got = NumericsMessage.decode(msg.encode)
 
-    msg.fields.values.each do |fld|
+    msg.__beefcake_fields__.values.each do |fld|
       assert_equal msg[fld.name], got[fld.name], fld.name
     end
   end
@@ -363,6 +369,13 @@ class MessageTest < Minitest::Test
     assert_equal a, b
     c = SimpleMessage.new :a => 2
     refute_equal b, c
+
+    d = EnumsMessage.new :a => 5
+    e = EnumsDefaultMessage.new :a => 5
+
+    refute_equal d, e
+    refute_equal d, :symbol
+    refute_equal :symbol, d
   end
 
   def test_inspect
@@ -399,6 +412,17 @@ class MessageTest < Minitest::Test
     assert_equal(exp, msg.to_hash)
   end
 
+  def test_duplicate_index
+    assert_raises Beefcake::Message::DuplicateFieldNumber do
+      Class.new do
+        include Beefcake::Message
+
+        required :clever_name, :int32, 1
+        required :naughty_field, :string, 1
+      end
+    end
+  end
+
   def test_bool_to_hash
     true_message = BoolMessage.new :bool => true
     true_expectation = { :bool => true }
@@ -409,4 +433,14 @@ class MessageTest < Minitest::Test
     assert_equal false_expectation, false_message.to_hash
   end
 
+  def test_fields_named_fields
+    contents = %w{fields named fields}
+    msg = FieldsMessage.new fields: contents
+    assert_equal 1, msg.__beefcake_fields__.length
+    assert_equal contents, msg.fields
+
+    assert_equal msg, FieldsMessage.decode(msg.encode)
+
+    assert_equal "<FieldsMessage fields: [\"fields\", \"named\", \"fields\"]>", msg.inspect
+  end
 end
