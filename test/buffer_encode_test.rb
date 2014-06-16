@@ -1,8 +1,8 @@
 # encoding: ASCII-8BIT
-require 'test/unit'
+require 'minitest/autorun'
 require 'beefcake/buffer/encode'
 
-class BufferEncodeTest < Test::Unit::TestCase
+class BufferEncodeTest < Minitest::Test
 
   B = Beefcake::Buffer
 

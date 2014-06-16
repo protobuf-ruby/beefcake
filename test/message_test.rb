@@ -1,4 +1,4 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'beefcake'
 
 class NumericsMessage
@@ -102,7 +102,7 @@ class FieldsMessage
   repeated :fields, :string, 1
 end
 
-class MessageTest < Test::Unit::TestCase
+class MessageTest < Minitest::Test
   B = Beefcake::Buffer
 
   ## Encoding
@@ -266,9 +266,7 @@ class MessageTest < Test::Unit::TestCase
 
   def test_encode_unknown_field
     msg = SimpleMessage.new :mystery_field => 'asdf'
-    assert_nothing_raised do
-      msg.encode.to_s
-    end
+    msg.encode.to_s
   end
 
   ## Decoding
@@ -370,14 +368,14 @@ class MessageTest < Test::Unit::TestCase
     b = SimpleMessage.new :a => 1
     assert_equal a, b
     c = SimpleMessage.new :a => 2
-    assert_not_equal b, c
+    refute_equal b, c
 
     d = EnumsMessage.new :a => 5
     e = EnumsDefaultMessage.new :a => 5
 
-    assert_not_equal d, e
-    assert_not_equal d, :symbol
-    assert_not_equal :symbol, d
+    refute_equal d, e
+    refute_equal d, :symbol
+    refute_equal :symbol, d
   end
 
   def test_inspect

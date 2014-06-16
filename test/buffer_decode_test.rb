@@ -1,7 +1,7 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'beefcake/buffer'
 
-class BufferDecodeTest < Test::Unit::TestCase
+class BufferDecodeTest < Minitest::Test
 
   B = Beefcake::Buffer
 
