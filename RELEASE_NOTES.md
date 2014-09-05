@@ -1,5 +1,17 @@
 # Beefcake Release Notes
 
+# 0.1.0 - 2014-09-05
+
+Release 1.0.0 includes changes and improvements.
+
+* Version numbering now properly semantic.
+* Ruby 1.8 is no longer supported.
+* Field number re-use raises a `DuplicateFieldNumber` error.
+* Checking to see if a type is encodable is much faster.
+* Fields named `fields` are now supported.
+* String read and decoding are benchmarked during testing.
+* `string` fields now decode with a `UTF-8` encoding.
+
 # 0.5.0 - 2013-12-20
 
 Release 0.5.0 corrects a few behaviors.
