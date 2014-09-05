@@ -10,11 +10,9 @@ class GeneratorTest < Minitest::Test
     @req = CodeGeneratorRequest.decode(mock_request)
   end
 
-  if "".respond_to?(:encoding)
-    def test_request_has_filenames_as_binary
-      @req.proto_file.each do |file|
-        assert_equal Encoding.find("ASCII-8BIT"), file.name.encoding
-      end
+  def test_request_has_filenames_as_string
+    @req.proto_file.each do |file|
+      assert_equal Encoding.find("UTF-8"), file.name.encoding
     end
   end
 
