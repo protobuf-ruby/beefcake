@@ -19,7 +19,9 @@ class BufferDecodeTest < Minitest::Test
 
   def test_read_string
     @buf.append_string("testing")
-    assert_equal "testing", @buf.read_string
+    decoded = @buf.read_string
+    assert_equal "testing", decoded
+    assert_equal Encoding.find('utf-8'), decoded.encoding
   end
 
   def test_read_fixed32
