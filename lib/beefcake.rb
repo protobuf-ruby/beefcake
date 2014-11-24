@@ -264,16 +264,24 @@ module Beefcake
           next
         end
 
-        self[fld.name] = fld.is_protobuf? ?
-          if not fld.repeated?
-            fld.same_type?(attrs[fld.name]) ?
-              attrs[fld.name] : fld.type.new(attrs[fld.name])
-          else
-            attrs[fld.name].map do |i|
-              fld.same_type?(i) ? i : fld.type.new(i)
-            end
+        unless fld.is_protobuf?
+          self[fld.name] = attrs[fld.name]
+          next
+        end
+
+        if fld.repeated?
+          self[fld.name] = attrs[fld.name].map do |i|
+            fld.same_type?(i) ? i : fld.type.new(i)
           end
-        : attrs[fld.name]
+          next
+        end
+
+        if fld.same_type? attrs[fld.name]
+          self[fld.name] = attrs[fld.name]
+          next
+        end
+
+        self[fld.name] = fld.type.new(attrs[fld.name])
       end
       self
     end
