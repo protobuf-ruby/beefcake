@@ -107,62 +107,62 @@ class FieldTest < Minitest::Test
 
   def test_required?
     f = FIELD.new :required, :field1, :string, 1
-    assert_true  f.required?
-    assert_false f.optional?
-    assert_false f.repeated?
+    assert f.required?
+    refute f.optional?
+    refute f.repeated?
 
     f = FIELD.new :optional, :field1, :int32, 1
-    assert_false f.required?
+    refute f.required?
 
     f = FIELD.new :repeated, :field1, :int32, 1
-    assert_false f.required?
+    refute f.required?
   end
 
   def test_optional?
     f = FIELD.new :optional, :field1, :string, 1
-    assert_true  f.optional?
-    assert_false f.required?
-    assert_false f.repeated?
+    assert f.optional?
+    refute f.required?
+    refute f.repeated?
 
     f = FIELD.new :required, :field1, :int32, 1
-    assert_false f.optional?
+    refute f.optional?
 
     f = FIELD.new :repeated, :field1, :int32, 1
-    assert_false f.optional?
+    refute f.optional?
   end
 
   def test_repeated?
     f = FIELD.new :repeated, :field1, :string, 1
-    assert_true  f.repeated?
-    assert_false f.required?
-    assert_false f.optional?
+    assert f.repeated?
+    refute f.required?
+    refute f.optional?
 
     f = FIELD.new :optional, :field1, :int32, 1
-    assert_false f.repeated?
+    refute f.repeated?
 
     f = FIELD.new :required, :field1, :int32, 1
-    assert_false f.optional?
+    refute f.optional?
   end
 
   def test_same_type
     f = FIELD.new(:required, :field1, :int32, 1)
-    assert_true  f.same_type?(:int32)
-    assert_false f.same_type?(:int64)
-    assert_false f.same_type?(SimpleMessage)
+    assert f.same_type?(:int32)
+    refute f.same_type?(:int64)
+    refute f.same_type?(SimpleMessage)
 
     f = FIELD.new(:required, :field1, SimpleMessage, 1)
-    assert_true  f.same_type?(SimpleMessage)
-    assert_false f.same_type?(:int32)
-    assert_false f.same_type?(:string)
-    assert_false f.same_type?(NumericsMessage)
+    assert f.same_type?(SimpleMessage)
+    refute f.same_type?(:int32)
+    refute f.same_type?(:string)
+    refute f.same_type?(NumericsMessage)
   end
 
   def test_is_protobuf?
     f = FIELD.new(:required, :field1, SimpleMessage, 1)
-    assert_true f.is_protobuf?
+    assert f.is_protobuf?
 
     f = FIELD.new(:required, :field1, :string, 1)
-    assert_false f.is_protobuf?
+    refute f.is_protobuf?
   end
 end
 
