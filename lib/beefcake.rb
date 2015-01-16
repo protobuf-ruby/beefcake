@@ -259,29 +259,36 @@ module Beefcake
     # @param [Hash] data to fill a protobuf message with.
     def assign(attrs)
       __beefcake_fields__.values.each do |fld|
-        if attrs[fld.name].nil?
+        attribute = attrs[fld.name]
+
+        if attribute.nil?
           self[fld.name] = nil
           next
         end
 
         unless fld.is_protobuf?
-          self[fld.name] = attrs[fld.name]
+          self[fld.name] = attribute
+          next
+        end
+
+        if fld.repeated? && attribute.is_a?(Hash)
+          self[fld.name] = fld.type.new(attribute)
           next
         end
 
         if fld.repeated?
-          self[fld.name] = attrs[fld.name].map do |i|
+          self[fld.name] = attribute.map do |i|
             fld.same_type?(i) ? i : fld.type.new(i)
           end
           next
         end
 
-        if fld.same_type? attrs[fld.name]
-          self[fld.name] = attrs[fld.name]
+        if fld.same_type? attribute
+          self[fld.name] = attribute
           next
         end
 
-        self[fld.name] = fld.type.new(attrs[fld.name])
+        self[fld.name] = fld.type.new(attribute)
       end
       self
     end
