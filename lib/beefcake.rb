@@ -277,7 +277,7 @@ module Beefcake
         end
 
         if fld.repeated? && attribute.is_a?(fld.type)
-          self[fld.name] = attribute
+          self[fld.name] = [attribute]
           next
         end
 
