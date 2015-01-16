@@ -276,6 +276,11 @@ module Beefcake
           next
         end
 
+        if fld.repeated? && attribute.is_a?(fld.type)
+          self[fld.name] = attribute
+          next
+        end
+
         if fld.repeated?
           self[fld.name] = attribute.map do |i|
             fld.same_type?(i) ? i : fld.type.new(i)
