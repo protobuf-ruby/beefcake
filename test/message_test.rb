@@ -342,6 +342,16 @@ class MessageTest < Minitest::Test
     msg.encode.to_s
   end
 
+  def test_repeated_with_hash
+    before = { simple: { b: 'hello' } }
+    RepeatedNestedMessage.new before
+  end
+
+  def test_repeated_with_scalar
+    inner = SimpleMessage.new(b: 'hello')
+    RepeatedNestedMessage.new simple: inner
+  end
+
   ## Decoding
   def test_decode_numerics
     msg = NumericsMessage.new({
