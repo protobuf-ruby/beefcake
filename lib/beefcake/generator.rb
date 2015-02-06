@@ -269,7 +269,8 @@ module Beefcake
     end
 
     def compile(ns, file)
-      puts "## Generated from #{file.name} for #{file.package}"
+      package_part = file.package ? "for #{file.package}" : ''
+      puts "## Generated from #{file.name} #{package_part}".strip
       puts "require \"beefcake\""
       puts
 
