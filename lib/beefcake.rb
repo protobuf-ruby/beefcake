@@ -38,6 +38,10 @@ module Beefcake
         type == obj
       end
 
+      def matches_type?(obj)
+        obj.is_a? type
+      end
+
       def is_protobuf?
         type.is_a?(Class) and type.include?(Beefcake::Message)
       end
@@ -284,12 +288,12 @@ module Beefcake
 
         if fld.repeated?
           self[fld.name] = attribute.map do |i|
-            fld.same_type?(i) ? i : fld.type.new(i)
+            fld.matches_type?(i) ? i : fld.type.new(i)
           end
           next
         end
 
-        if fld.same_type? attribute
+        if fld.matches_type? attribute
           self[fld.name] = attribute
           next
         end
