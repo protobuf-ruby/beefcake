@@ -1,6 +1,17 @@
 # Beefcake Release Notes
 
-# 0.1.0 - 2014-09-05
+# 1.1.0 - 2015-05-26
+
+Release 1.1.0 includes improvements and bug fixes.
+
+* Correct message-hash conversion behavior, fixed by Peter "kybu" Vrabel.
+* Remove trailing whitespace in generator output without package name.
+* Allow a Hash instead of an Array<Hash> when assigning a repeated field that's
+  only repeated once.
+* Ensure object identities are persisted through message initialization,
+  reported by Peter Neubauer.
+
+# 1.0.0 - 2014-09-05
 
 Release 1.0.0 includes changes and improvements.
 
@@ -21,7 +32,7 @@ Release 0.5.0 corrects a few behaviors.
 * Don't crash when attempting to reencode frozen strings,
   found thanks to Kyle "Aphyr" Kingsbury
 * Return `nil` instead of raising a generic Ruby error when trying to
-  decode a zero-length buffer, fixed by Tobias "grobie" Schmidt 
+  decode a zero-length buffer, fixed by Tobias "grobie" Schmidt
 
 # 0.4.0 - 2013-10-10
 
