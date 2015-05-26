@@ -471,6 +471,13 @@ class MessageTest < Minitest::Test
     refute_equal :symbol, d
   end
 
+  def test_object_identity
+    inside = [SimpleMessage.new(a: 12345)]
+    outside = RepeatedNestedMessage.new simple: inside
+
+    assert_equal outside.simple.first.object_id, inside.first.object_id
+  end
+
   def test_inspect
     msg = SimpleMessage.new :a => 1
     assert_equal "<SimpleMessage a: 1>", msg.inspect
