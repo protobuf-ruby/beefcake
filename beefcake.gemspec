@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Blake Mizerany", "Matt Proud", "Bryce Kerley"]
   s.email       = ["blake.mizerany@gmail.com", "matt.proud@gmail.com", "bkerley@brycekerley.net"]
   s.homepage    = "https://github.com/protobuf-ruby/beefcake"
-  s.summary     = %q{A sane protobuf library for Ruby}
-  s.description = %q{A sane protobuf library for Ruby}
+  s.summary     = %q{A pure-Ruby protobuf library}
+  s.description = %q{A pure-Ruby Protocol Buffers library}
   s.license     = 'MIT'
 
   s.files         = `git ls-files`.split("\n")
