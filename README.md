@@ -1,7 +1,6 @@
 # Beefcake
 
-A sane Google Protocol Buffers library for Ruby. It's all about being Buf;
-ProtoBuf.
+A pure-Ruby Google Protocol Buffers library. It's all about being Buf; ProtoBuf.
 
 ## Installation
 
