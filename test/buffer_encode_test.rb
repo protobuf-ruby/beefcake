@@ -24,6 +24,14 @@ class BufferEncodeTest < Minitest::Test
     assert_equal "\007testing", @buf.to_s
   end
 
+  def test_append_string_does_not_change_encoding
+    subject = "testing".force_encoding('UTF-8')
+    assert_equal 'UTF-8', subject.encoding.name
+
+    @buf.append_string(subject)
+    assert_equal 'UTF-8', subject.encoding.name
+  end
+
   def test_append_fixed32
     @buf.append_fixed32(1)
     assert_equal "\001\0\0\0", @buf.to_s
