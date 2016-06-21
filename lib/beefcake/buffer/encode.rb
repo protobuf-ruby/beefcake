@@ -106,7 +106,7 @@ module Beefcake
 
     def append_string(s)
       actual_string = thaw_string s
-      encoded = actual_string.force_encoding 'binary'
+      encoded = actual_string.dup.force_encoding 'binary'
       append_uint64(encoded.length)
       self << encoded
     end
