@@ -1,5 +1,11 @@
 # Beefcake Release Notes
 
+# 1.2.0 - 2016-06-21
+
+Release 1.2.0 includes one bug fix.
+
+* Clone strings before `force_encoding`. [#70](https://github.com/protobuf-ruby/beefcake/pull/70)
+
 # 1.1.0 - 2015-05-26
 
 Release 1.1.0 includes improvements and bug fixes.
