@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "beefcake"
   s.version     = Beefcake::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Blake Mizerany", "Matt Proud", "Bryce Kerley"]
-  s.email       = ["blake.mizerany@gmail.com", "matt.proud@gmail.com", "bkerley@brycekerley.net"]
+  s.authors     = ["Blake Mizerany", "Matt Proud", "Bryce Kerley", "Joshua Warchol", "Alex Dean"]
+  s.email       = ["blake.mizerany@gmail.com", "matt.proud@gmail.com", "bkerley@brycekerley.net", "joshua@unwin.org", "github@mostlyalex.com"]
   s.homepage    = "https://github.com/protobuf-ruby/beefcake"
   s.summary     = %q{A pure-Ruby protobuf library}
   s.description = %q{A pure-Ruby Protocol Buffers library}
